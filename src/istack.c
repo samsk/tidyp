@@ -97,13 +97,14 @@ static void PopIStack( TidyDocImpl* doc )
 {
     Lexer* lexer = doc->lexer;
     IStack *istack;
+    AttVal *av;
 
     --(lexer->istacksize);
     istack = &(lexer->istack[lexer->istacksize]);
 
     while (istack->attributes)
     {
-        AttVal * const av = istack->attributes;
+        av = istack->attributes;
         istack->attributes = av->next;
         TY_(FreeAttribute)( doc, av );
     }
@@ -113,11 +114,10 @@ static void PopIStack( TidyDocImpl* doc )
 static void PopIStackUntil( TidyDocImpl* doc, TidyTagId tid )
 {
     Lexer* lexer = doc->lexer;
+    IStack *istack;
 
     while (lexer->istacksize > 0)
     {
-        IStack *istack;
-
         PopIStack( doc );
         istack = &(lexer->istack[lexer->istacksize]);
         if ( istack->tag->id == tid )
@@ -172,7 +172,7 @@ Bool TY_(IsPushed)( TidyDocImpl* doc, Node *node )
 */
 Bool TY_(IsPushedLast)( TidyDocImpl* doc, Node *element, Node *node )
 {
-    const Lexer* const lexer = doc->lexer;
+    Lexer* lexer = doc->lexer;
 
     if ( element && !IsNodePushable(element) )
         return no;
@@ -205,7 +205,7 @@ Bool TY_(IsPushedLast)( TidyDocImpl* doc, Node *element, Node *node )
 */
 int TY_(InlineDup)( TidyDocImpl* doc, Node* node )
 {
-    Lexer* const lexer = doc->lexer;
+    Lexer* lexer = doc->lexer;
     int n;
 
     if ((n = lexer->istacksize - lexer->istackbase) > 0)
@@ -257,9 +257,14 @@ Node *TY_(InsertedToken)( TidyDocImpl* doc )
     node->type = StartTag;
     node->implicit = yes;
     node->start = lexer->txtstart;
-    /* #431734 [JTidy bug #226261 (was 126261)] - fix by Gary Peskin 20 Dec 00 */
+    /* #431734 [JTidy bug #226261 (was 126261)] - fix by Gary Peskin 20 Dec 00 */ 
     node->end = lexer->txtend; /* was : lexer->txtstart; */
     istack = lexer->insert;
+
+#if 0 && defined(_DEBUG)
+    if ( lexer->istacksize == 0 )
+        fprintf( stderr, "0-size istack!\n" );
+#endif
 
     node->element = TY_(tmbstrdup)(doc->allocator, istack->element);
     node->tag = istack->tag;
@@ -292,7 +297,7 @@ Bool TY_(SwitchInline)( TidyDocImpl* doc, Node* element, Node* node )
          && element && element->tag
          && node && node->tag
          && TY_(IsPushed)( doc, element )
-         && TY_(IsPushed)( doc, node )
+         && TY_(IsPushed)( doc, node ) 
          && ((lexer->istacksize - lexer->istackbase) >= 2) )
     {
         /* we have a chance of succeeding ... */

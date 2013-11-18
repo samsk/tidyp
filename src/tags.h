@@ -122,6 +122,13 @@ Bool TY_(nodeIsElement)( Node* node );
 
 Bool TY_(nodeHasText)( TidyDocImpl* doc, Node* node );
 
+#if 0
+/* Compare & result to operand.  If equal, then all bits
+** requested are set.
+*/
+Bool nodeMatchCM( Node* node, uint contentModel );
+#endif
+
 /* True if any of the bits requested are set.
 */
 Bool TY_(nodeHasCM)( Node* node, uint contentModel );
@@ -217,6 +224,7 @@ uint TY_(nodeHeaderLevel)( Node* node );  /* 1, 2, ..., 6 */
 #define nodeIsU( node )          TagIsId( node, TidyTag_U )
 #define nodeIsMENU( node )       TagIsId( node, TidyTag_MENU )
 #define nodeIsBUTTON( node )     TagIsId( node, TidyTag_BUTTON )
-
+#define nodeIsCANVAS( node )     TagIsId( node, TidyTag_CANVAS )
+#define nodeIsPROGRESS( node )   TagIsId( node, TidyTag_PROGRESS )
 
 #endif /* __TAGS_H__ */

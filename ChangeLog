@@ -1,3 +1,13 @@
+2013-11-16  Sam <samuel_._behan(at)dob_._sk>
+
+	* version 1.05 (publishing internal code to not let it be forgotten)
+	* merged HTML5 support and various changes from tidy
+		NOTE: this merge is based on HTML5 patch I've found somewhere,
+		with various fixes and HTML5 improvements (it just works)
+
+
+---------------------------------
+
 Changelog for tidyp
 
 NEXT

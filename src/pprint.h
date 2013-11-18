@@ -1,8 +1,8 @@
 #ifndef __PPRINT_H__
 #define __PPRINT_H__
 
-/* pprint.h -- pretty print parse tree
-
+/* pprint.h -- pretty print parse tree  
+  
    (c) 1998-2007 (W3C) MIT, ERCIM, Keio University
    See tidyp.h for the copyright notice.
 
@@ -35,7 +35,7 @@
 ** line, not the end of just the second line.
 **
 ** We must also keep track "In Attribute" and "In String"
-** states at the _end_ of each line,
+** states at the _end_ of each line, 
 */
 
 typedef struct _TidyIndent
@@ -53,11 +53,16 @@ typedef struct _TidyPrintImpl
     uint lbufsize;
     uint linelen;
     uint wraphere;
-
+  
     uint ixInd;
     TidyIndent indent[2];  /* Two lines worth of indent state */
 } TidyPrintImpl;
 
+
+#if 0 && SUPPORT_ASIAN_ENCODINGS
+/* #431953 - start RJ Wraplen adjusted for smooth international ride */
+uint CWrapLen( TidyDocImpl* doc, uint ind );
+#endif
 
 void TY_(InitPrintBuf)( TidyDocImpl* doc );
 void TY_(FreePrintBuf)( TidyDocImpl* doc );
@@ -68,7 +73,7 @@ void TY_(PFlushLine)( TidyDocImpl* doc, uint indent );
 /* print just the content of the body element.
 ** useful when you want to reuse material from
 ** other documents.
-**
+** 
 ** -- Sebastiano Vigna <vigna@dsi.unimi.it>
 */
 

@@ -6,12 +6,6 @@
   (c) 1998-2008 (W3C) MIT, ERCIM, Keio University
   See tidyp.h for the copyright notice.
 
-  CVS Info :
-
-    $Author: arnaud02 $
-    $Date: 2008/03/17 12:57:01 $
-    $Revision: 1.66 $
-
 */
 
 #ifdef __cplusplus
@@ -30,17 +24,17 @@ extern "C" {
 /*
   Uncomment the following #define if you are on a system
   supporting the HOME environment variable.
-  It enables tidy to find config files named ~/.tidyrc if
+  It enables tidy to find config files named ~/.tidyrc if 
   the HTML_TIDY environment variable is not set.
 */
 /* #define TIDY_USER_CONFIG_FILE "~/.tidyrc" */
 
 /*
   Uncomment the following #define if your
-  system supports the call getpwnam().
+  system supports the call getpwnam(). 
   E.g. Unix and Linux.
 
-  It enables tidy to find files named
+  It enables tidy to find files named 
   ~your/foo for use in the HTML_TIDY environment
   variable or CONFIG_FILE or USER_CONFIGFILE or
   on the command line: -config ~joebob/tidy.cfg
@@ -104,7 +98,7 @@ extern "C" {
 #endif
 
 /* Convenience defines for BSD like platforms */
-
+ 
 #if defined(__FreeBSD__)
 #define BSD_BASED_OS
 #ifndef PLATFORM_NAME
@@ -144,7 +138,7 @@ extern "C" {
 #endif
 
 /* Convenience defines for Windows platforms */
-
+ 
 #if defined(WINDOWS) || defined(_WIN32)
 
 #define WINDOWS_OS
@@ -178,7 +172,7 @@ extern "C" {
 #endif
 
 /* Convenience defines for Linux platforms */
-
+ 
 #if defined(linux) && defined(__alpha__)
 /* Linux on Alpha - gcc compiler */
 #define LINUX_OS
@@ -231,7 +225,7 @@ extern "C" {
 #endif
 
 /* Convenience defines for Solaris platforms */
-
+ 
 #if defined(sun)
 #define SOLARIS_OS
 #ifndef PLATFORM_NAME
@@ -391,10 +385,10 @@ extern "C" {
   If your platform doesn't support <utime.h> and the
   utime() function, or <sys/futime> and the futime()
   function then set PRESERVE_FILE_TIMES to 0.
-
+  
   If your platform doesn't support <sys/utime.h> and the
   futime() function, then set HAS_FUTIME to 0.
-
+  
   If your platform supports <utime.h> and the
   utime() function requires the file to be
   closed first, then set UTIME_NEEDS_CLOSED_FILE to 1.
@@ -433,7 +427,7 @@ extern "C" {
 #endif
 
 #if defined(MAC_OS_X) || (!defined(MAC_OS_CLASSIC) && !defined(__MSL__))
-#include <sys/types.h>
+#include <sys/types.h> 
 #include <sys/stat.h>
 #else
 #include <stat.h>
@@ -448,13 +442,13 @@ extern "C" {
 /*
   MS Windows needs _ prefix for Unix file functions.
   Not required by Metrowerks Standard Library (MSL).
-
+  
   Tidy uses following for preserving the last modified time.
 
   WINDOWS automatically set by Win16 compilers.
   _WIN32 automatically set by Win32 compilers.
 */
-#if defined(_WIN32) && !defined(__MSL__) && !defined(__BORLANDC__) && !defined(__GNUC__)
+#if defined(_WIN32) && !defined(__MSL__) && !defined(__BORLANDC__)
 
 #define futime _futime
 #define fstat _fstat
@@ -469,11 +463,11 @@ extern "C" {
 /*
   MS Windows needs _ prefix for Unix file functions.
   Not required by Metrowerks Standard Library (MSL).
-
+  
   WINDOWS automatically set by Win16 compilers.
   _WIN32 automatically set by Win32 compilers.
 */
-#if defined(_WIN32) && !defined(__MSL__) && !defined(__BORLANDC__) && !defined(__GNUC__)
+#if defined(_WIN32) && !defined(__MSL__) && !defined(__BORLANDC__)
 
 #ifndef __WATCOMC__
 #define fileno _fileno
@@ -498,7 +492,7 @@ extern "C" {
 #if defined(_WIN32)
 
 #if (defined(_USRDLL) || defined(_WINDLL)) && !defined(TIDY_EXPORT)
-#define TIDY_EXPORT __declspec( dllexport )
+#define TIDY_EXPORT __declspec( dllexport ) 
 #endif
 
 #ifndef TIDY_CALL
@@ -525,8 +519,18 @@ typedef unsigned int uint;
 typedef unsigned long ulong;
 #endif
 
+/*
+With GCC 4,  __attribute__ ((visibility("default"))) can be used along compiling with tidylib 
+with "-fvisibility=hidden". See http://gcc.gnu.org/wiki/Visibility and build/gmake/Makefile.
+*/
+/*
+#if defined(__GNUC__) && __GNUC__ >= 4
+#define TIDY_EXPORT __attribute__ ((visibility("default")))
+#endif
+*/
+
 #ifndef TIDY_EXPORT /* Define it away for most builds */
-#define TIDY_EXPORT
+#define TIDY_EXPORT 
 #endif
 
 #ifndef TIDY_STRUCT
@@ -554,41 +558,6 @@ typedef const tmbchar* ctmbstr; /* Ditto, but const */
 # define ARG_UNUSED(x) x
 #endif
 
-#define NOTNULL(x)                  /*@notnull@*/ x
-    /* The pointer passed may not be NULL */
-
-#define NULLOK(x)                   /*@null@*/ x
-    /* The pointer passed may be NULL */
-
-#define ARGIN(x)                    /*@in@*/ /*@notnull@*/ x
-#define ARGIN_NULLOK(x)             /*@in@*/ /*@null@*/ x
-    /* The pointer target must be completely defined before being passed */
-    /* to the function. */
-
-#define ARGOUT(x)                   /*@out@*/ /*@notnull@*/ x
-#define ARGOUT_NULLOK(x)            /*@out@*/ /*@null@*/ x
-    /* The pointer target will be defined by the function */
-
-#define ARGMOD(x)                   /*@in@*/ /*@notnull@*/ x
-#define ARGMOD_NULLOK(x)            /*@in@*/ /*@null@*/ x
-    /* The pointer target must be completely defined before being passed, */
-    /* and MAY be modified by the function. */
-
-#define FUNC_MODIFIES(x)            /*@modifies x@*/
-    /* Never applied by a human, only by the headerizer. */
-
-#define ARGFREE(x)                          /*@only@*/ /*@out@*/ /*@null@*/ x
-    /* From the Splint manual: The parameter to free() must reference */
-    /* an unshared object.  Since the parameter is declared using "only", */
-    /* the caller may not use the referenced object after the call, and */
-    /* may not pass in a reference to a shared object.  There is nothing */
-    /* special about malloc and free --  their behavior can be described */
-    /* entirely in terms of the provided annotations. */
-
-#define __attribute__warn_unused_result__ __attribute__((__warn_unused_result__))
-#define TIDY_IGNORABLE_RESULT
-#define TIDY_WARN_UNUSED_RESULT   __attribute__warn_unused_result__
-
 /* HAS_VSNPRINTF triggers the use of "vsnprintf", which is safe related to
    buffer overflow. Therefore, we make it the default unless HAS_VSNPRINTF
    has been defined. */
@@ -606,11 +575,21 @@ typedef const tmbchar* ctmbstr; /* Ditto, but const */
   work around is to avoid bool altogether
   by introducing a new enum called Bool
 */
+/* We could use the C99 definition where supported
+typedef _Bool Bool;
+#define no (_Bool)0
+#define yes (_Bool)1
+*/
 typedef enum
 {
    no,
    yes
 } Bool;
+
+/* for NULL pointers 
+#define null ((const void*)0)
+extern void* null;
+*/
 
 #if defined(DMALLOC)
 #include "dmalloc.h"

@@ -4,7 +4,7 @@
   See tidyp.h for the copyright notice.
 
   Entity handling can be static because there are no config or
-  document-specific values.  Lookup table is 100% defined at
+  document-specific values.  Lookup table is 100% defined at 
   compile time.
 
 */
@@ -137,7 +137,7 @@ static const entity entities[] =
     { "yuml",     VERS_ALL,      255 },
 
     /*
-    ** Extended Entities defined in HTML 4: Symbols
+    ** Extended Entities defined in HTML 4: Symbols 
     */
     { "fnof",     VERS_FROM40,   402 },
     { "Alpha",    VERS_FROM40,   913 },
@@ -314,6 +314,40 @@ static const entity* entitiesLookup( ctmbstr s )
             return np;
     return NULL;
 }
+
+#if 0
+/* entity starting with "&" returns zero on error */
+uint EntityCode( ctmbstr name, uint versions )
+{
+    const entity* np;
+    assert( name && name[0] == '&' );
+
+    /* numeric entitity: name = "&#" followed by number */
+    if ( name[1] == '#' )
+    {
+        uint c = 0;  /* zero on missing/bad number */
+        Bool isXml = ( (versions & VERS_XML) == VERS_XML );
+
+        /* 'x' prefix denotes hexadecimal number format */
+        if ( name[2] == 'x' || (!isXml && name[2] == 'X') )
+            sscanf( name+3, "%x", &c );
+        else
+            sscanf( name+2, "%u", &c );
+
+        return (uint) c;
+    }
+
+   /* Named entity: name ="&" followed by a name */
+    if ( NULL != (np = entitiesLookup(name+1)) )
+    {
+        /* Only recognize entity name if version supports it.  */
+        if ( np->versions & versions )
+            return np->code;
+    }
+
+    return 0;   /* zero signifies unknown entity name */
+}
+#endif
 
 Bool TY_(EntityInfo)( ctmbstr name, Bool isXml, uint* code, uint* versions )
 {

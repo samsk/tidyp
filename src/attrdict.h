@@ -118,4 +118,31 @@ extern const AttrVersion TY_(W3CAttrsFor_UL)[];
 extern const AttrVersion TY_(W3CAttrsFor_VAR)[];
 extern const AttrVersion TY_(W3CAttrsFor_XMP)[];
 
+extern const AttrVersion TY_(W3CAttrsFor_TRACK)[];
+extern const AttrVersion TY_(W3CAttrsFor_SUMMARY)[];
+extern const AttrVersion TY_(W3CAttrsFor_FIGCAPTION)[];
+extern const AttrVersion TY_(W3CAttrsFor_HGROUP)[];
+extern const AttrVersion TY_(W3CAttrsFor_FIGURE)[];
+extern const AttrVersion TY_(W3CAttrsFor_ARTICLE)[];
+extern const AttrVersion TY_(W3CAttrsFor_ASIDE)[];
+extern const AttrVersion TY_(W3CAttrsFor_NAV)[];
+extern const AttrVersion TY_(W3CAttrsFor_SECTION)[];
+extern const AttrVersion TY_(W3CAttrsFor_FOOTER)[];
+extern const AttrVersion TY_(W3CAttrsFor_HEADER)[];
+extern const AttrVersion TY_(W3CAttrsFor_DETAILS)[];
+extern const AttrVersion TY_(W3CAttrsFor_COMMAND)[];
+extern const AttrVersion TY_(W3CAttrsFor_MARK)[];
+extern const AttrVersion TY_(W3CAttrsFor_OUTPUT)[];
+extern const AttrVersion TY_(W3CAttrsFor_METER)[];
+extern const AttrVersion TY_(W3CAttrsFor_PROGRESS)[];
+extern const AttrVersion TY_(W3CAttrsFor_TIME)[];
+extern const AttrVersion TY_(W3CAttrsFor_DATALIST)[];
+extern const AttrVersion TY_(W3CAttrsFor_AUDIO)[];
+extern const AttrVersion TY_(W3CAttrsFor_VIDEO)[];
+extern const AttrVersion TY_(W3CAttrsFor_CANVAS)[];
+extern const AttrVersion TY_(W3CAttrsFor_SOURCE)[];
+extern const AttrVersion TY_(W3CAttrsFor_EMBED)[];
+extern const AttrVersion TY_(W3CAttrsFor_KEYGEN)[];
+extern const AttrVersion TY_(W3CAttrsFor_WBR)[];
+
 #endif /* __ATTRDICT_H__ */

@@ -18,13 +18,13 @@
   Such rules are applied to the element's content and then
   to the element itself until none of the rules more apply.
   Having applied all the rules to an element, it will have
-  a style attribute with one or more properties.
+  a style attribute with one or more properties. 
 
   Other rules strip the element they apply to, replacing
   it by style properties on the contents, e.g.
-
+  
   <dir><li><p>...</li></dir> -> <p style="margin-left 1em">...
-
+      
   These rules are applied to an element before processing
   its content and replace the current element by the first
   element in the exposed content.
@@ -411,7 +411,7 @@ static void CleanBodyAttrs( TidyDocImpl* doc, Node* body )
     tmbstr bgcolor = NULL;
     tmbstr color   = NULL;
     AttVal* attr;
-
+    
     if (NULL != (attr = TY_(AttrGetById)(body, TidyAttr_BACKGROUND)))
     {
         bgurl = attr->value;
@@ -482,8 +482,9 @@ static void CleanBodyAttrs( TidyDocImpl* doc, Node* body )
 
 static Bool NiceBody( TidyDocImpl* doc )
 {
-    Node* const node = TY_(FindBody)(doc);
-    if (node) {
+    Node* node = TY_(FindBody)(doc);
+    if (node)
+    {
         if (TY_(AttrGetById)(node, TidyAttr_BACKGROUND) ||
             TY_(AttrGetById)(node, TidyAttr_BGCOLOR)    ||
             TY_(AttrGetById)(node, TidyAttr_TEXT)       ||
@@ -1018,10 +1019,8 @@ static Bool Center2Div( TidyDocImpl* doc, Node *node, Node **pnode)
             }
             else
             {
-                Node * const prev   = node->prev;
-                Node * const next   = node->next;
-                Node * const parent = node->parent;
-
+                Node *prev = node->prev, *next = node->next,
+                     *parent = node->parent;
                 DiscardContainer( doc, node, pnode );
 
                 node = TY_(InferredTag)(doc, TidyTag_BR);
@@ -1115,7 +1114,8 @@ static Bool MergeNestedElements( TidyDocImpl* doc,
          || !TagIsId(child, Id) )
         return no;
 
-    if ( state == TidyAutoState && !CopyAttrs(doc, node, child) )
+    if ( state == TidyAutoState
+         && CopyAttrs(doc, node, child) == no )
         return no;
 
     MergeStyles( doc, node, child );
@@ -1130,11 +1130,11 @@ static Bool MergeNestedElements( TidyDocImpl* doc,
 
 static Bool NestedList( TidyDocImpl* doc, Node *node, Node **pnode )
 {
-    Node *list;
+    Node *child, *list;
 
     if ( nodeIsUL(node) || nodeIsOL(node) )
     {
-        Node *child = node->content;
+        child = node->content;
 
         if (child == NULL)
             return no;
@@ -1234,7 +1234,7 @@ Bool FindCSSSpanEq( Node *node, ctmbstr *s, Bool deprecatedOnly )
             *s = CSS_SpanEq[i].CSSeq;
             return yes;
         }
-    return no;
+    return no; 
 }
 
 /* Necessary conditions to apply BlockStyle(). */
@@ -1379,7 +1379,7 @@ static Bool InlineElementToCSS( TidyDocImpl* doc, Node* node,
         return yes;
     }
     return no;
-}
+} 
 
 /*
   Replace font elements by span elements, deleting
@@ -1524,7 +1524,7 @@ static void DefineStyleRules( TidyDocImpl* doc, Node *node )
 void TY_(CleanDocument)( TidyDocImpl* doc )
 {
     /* placeholder.  CleanTree()/CleanNode() will not
-    ** zap root element
+    ** zap root element 
     */
     CleanTree( doc, &doc->root );
 
@@ -1693,7 +1693,7 @@ static Node* PruneSection( TidyDocImpl* doc, Node *node )
 
         if (node == NULL)
             return NULL;
-
+        
         if (node->type == SectionTag)
         {
             if (TY_(tmbstrncmp)(lexer->lexbuf + node->start, "if", 2) == 0)
@@ -1858,7 +1858,7 @@ void TY_(NormalizeSpaces)(Lexer *lexer, Node *node)
 /* used to hunt for hidden preformatted sections */
 static Bool NoMargins(Node *node)
 {
-    AttVal * const attval = TY_(AttrGetById)(node, TidyAttr_STYLE);
+    AttVal *attval = TY_(AttrGetById)(node, TidyAttr_STYLE);
 
     if ( !AttrHasValue(attval) )
         return no;
@@ -2018,7 +2018,7 @@ void TY_(CleanWord2000)( TidyDocImpl* doc, Node *node)
         if ( nodeIsP(node) )
         {
             AttVal *attr, *atrStyle;
-
+            
             attr = TY_(AttrGetById)(node, TidyAttr_CLASS);
             atrStyle = TY_(AttrGetById)(node, TidyAttr_STYLE);
             /*
@@ -2102,7 +2102,7 @@ Bool TY_(IsWord2000)( TidyDocImpl* doc )
 
     if (html && TY_(GetAttrByName)(html, "xmlns:o"))
         return yes;
-
+    
     /* search for <meta name="GENERATOR" content="Microsoft ..."> */
     head = TY_(FindHEAD)( doc );
 
@@ -2176,6 +2176,50 @@ void TY_(BumpObject)( TidyDocImpl* doc, Node *html )
         }
     }
 }
+
+/* This is disabled due to http://tidy.sf.net/bug/681116 */
+#if 0
+void FixBrakes( TidyDocImpl* pDoc, Node *pParent )
+{
+    Node *pNode;
+    Bool bBRDeleted = no;
+
+    if (NULL == pParent)
+        return;
+
+    /*  First, check the status of All My Children  */
+    pNode = pParent->content;
+    while (NULL != pNode )
+    {
+        /* The node may get trimmed, so save the next pointer, if any */
+        Node *pNext = pNode->next;
+        FixBrakes( pDoc, pNode );
+        pNode = pNext;
+    }
+
+
+    /*  As long as my last child is a <br />, move it to my last peer  */
+    if ( nodeCMIsBlock( pParent ))
+    { 
+        for ( pNode = pParent->last; 
+              NULL != pNode && nodeIsBR( pNode ); 
+              pNode = pParent->last ) 
+        {
+            if ( NULL == pNode->attributes && no == bBRDeleted )
+            {
+                TY_(DiscardElement)( pDoc, pNode );
+                bBRDeleted = yes;
+            }
+            else
+            {
+                TY_(RemoveNode)( pNode );
+                TY_(InsertNodeAfterElement)( pParent, pNode );
+            }
+        }
+        TY_(TrimEmptyElement)( pDoc, pParent );
+    }
+}
+#endif
 
 void TY_(VerifyHTTPEquiv)(TidyDocImpl* doc, Node *head)
 {
@@ -2352,7 +2396,7 @@ void TY_(WbrToSpace)(TidyDocImpl* doc, Node* node)
     <p title='&#x2018;'>...</p>
 
   got
-
+  
     <p title='''>...</p>
 
   Since browser support is much better nowadays and
@@ -2500,7 +2544,7 @@ void TY_(FixLanguageInformation)(TidyDocImpl* doc, Node* node, Bool wantXmlLang,
 
             if (lang && !wantLang)
                 TY_(RemoveAttribute)(doc, node, lang);
-
+            
             if (xmlLang && !wantXmlLang)
                 TY_(RemoveAttribute)(doc, node, xmlLang);
         }

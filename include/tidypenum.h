@@ -1,39 +1,33 @@
-#ifndef __TIDYPENUM_H__
-#define __TIDYPENUM_H__
+#ifndef __TIDYENUM_H__
+#define __TIDYENUM_H__
 
-/* @file tidypenum.h -- Split public enums into separate header
+/* @file tidyenum.h -- Split public enums into separate header
 
   Simplifies enum re-use in various wrappers.  e.g. SWIG
   generated wrappers and COM IDL files.
 
   Copyright (c) 1998-2008 World Wide Web Consortium
-  (Massachusetts Institute of Technology, European Research
+  (Massachusetts Institute of Technology, European Research 
   Consortium for Informatics and Mathematics, Keio University).
   All Rights Reserved.
-
-  CVS Info :
-
-    $Author: arnaud02 $
-    $Date: 2008/06/18 20:18:54 $
-    $Revision: 1.18 $
 
   Contributing Author(s):
 
      Dave Raggett <dsr@w3.org>
 
   The contributing author(s) would like to thank all those who
-  helped with testing, bug fixes and suggestions for improvements.
+  helped with testing, bug fixes and suggestions for improvements. 
   This wouldn't have been possible without your help.
 
   COPYRIGHT NOTICE:
-
+ 
   This software and documentation is provided "as is," and
   the copyright holders and contributing author(s) make no
   representations or warranties, express or implied, including
   but not limited to, warranties of merchantability or fitness
   for any particular purpose or that the use of the software or
   documentation will not infringe any third party patents,
-  copyrights, trademarks or other rights.
+  copyrights, trademarks or other rights. 
 
   The copyright holders and contributing author(s) will not be held
   liable for any direct, indirect, special or consequential damages
@@ -49,7 +43,7 @@
      not be misrepresented as being the original source.
   3. This Copyright notice may not be removed or altered from any
      source or altered source distribution.
-
+ 
   The copyright holders and contributing author(s) specifically
   permit, without fee, and encourage the use of this source code
   as a component for supporting the Hypertext Markup Language in
@@ -92,7 +86,7 @@ typedef enum
 
   TidyCharEncoding,    /**< In/out character encoding */
   TidyInCharEncoding,  /**< Input character encoding (if different) */
-  TidyOutCharEncoding, /**< Output character encoding (if different) */
+  TidyOutCharEncoding, /**< Output character encoding (if different) */    
   TidyNewline,         /**< Output line ending (default to platform) */
 
   TidyDoctypeMode,     /**< See doctype property */
@@ -100,7 +94,7 @@ typedef enum
 
   TidyDuplicateAttrs,  /**< Keep first or last duplicate attribute */
   TidyAltText,         /**< Default text for alt attribute */
-
+  
   /* obsolete */
   TidySlideStyle,      /**< Style sheet for slides: not used for anything yet */
 
@@ -108,11 +102,14 @@ typedef enum
   TidyOutFile,         /**< File name to write markup to */
   TidyWriteBack,       /**< If true then output tidied markup */
   TidyShowMarkup,      /**< If false, normal output is suppressed */
+  TidyShowInfo,        /**< If true, info-level messages are shown */
   TidyShowWarnings,    /**< However errors are always shown */
   TidyQuiet,           /**< No 'Parsing X', guessed DTD or summary */
   TidyIndentContent,   /**< Indent content of appropriate tags */
                        /**< "auto" does text/block level content indentation */
-  TidyHideEndTags,     /**< Suppress optional end tags */
+  TidyCoerceEndTags,   /**< Coerce end tags from start tags where probably intended */
+  TidyOmitOptionalTags,/**< Suppress optional start tags and end tags */
+  TidyHideEndTags,     /**< Legacy name for TidyOmitOptionalTags */
   TidyXmlTags,         /**< Treat input as XML */
   TidyXmlOut,          /**< Create output as XML */
   TidyXhtmlOut,        /**< Output extensible HTML */
@@ -123,9 +120,11 @@ typedef enum
   TidyUpperCaseAttrs,  /**< Output attributes in upper not lower case */
   TidyMakeBare,        /**< Make bare HTML: remove Microsoft cruft */
   TidyMakeClean,       /**< Replace presentational clutter by style rules */
+  TidyGDocClean,       /**< Clean up HTML exported from Google Docs */
   TidyLogicalEmphasis, /**< Replace i by em and b by strong */
   TidyDropPropAttrs,   /**< Discard proprietary attributes */
   TidyDropFontTags,    /**< Discard presentation tags */
+  TidyDropEmptyElems,  /**< Discard empty elements */
   TidyDropEmptyParas,  /**< Discard empty p elements */
   TidyFixComments,     /**< Fix comments with adjacent hyphens */
   TidyBreakBeforeBR,   /**< Output newline before <br> or not? */
@@ -189,7 +188,7 @@ typedef enum
   TidyEmptyTags,       /**< Declared empty tags */
   TidyPreTags,         /**< Declared pre tags */
 
-  TidyAccessibilityCheckLevel, /**< Accessibility check level
+  TidyAccessibilityCheckLevel, /**< Accessibility check level 
                                    0 (old style), or 1, 2, 3 */
 
   TidyVertSpace,       /**< degree to which markup is spread out vertically */
@@ -198,6 +197,7 @@ typedef enum
 #else
   TidyPunctWrapNotUsed,
 #endif
+  TidyMergeEmphasis,       /**< Merge nested B and I elements */
   TidyMergeDivs,       /**< Merge multiple DIVs */
   TidyDecorateInferredUL,  /**< Mark inferred UL elements with no indent CSS */
   TidyPreserveEntities,    /**< Preserve entities */
@@ -240,6 +240,7 @@ typedef enum
 */
 typedef enum
 {
+    TidyDoctypeHtml5,   /**< <!DOCTYPE html> */
     TidyDoctypeOmit,    /**< Omit DOCTYPE altogether */
     TidyDoctypeAuto,    /**< Keep DOCTYPE in input.  Set version to content */
     TidyDoctypeStrict,  /**< Convert document to HTML 4 strict content model */
@@ -258,15 +259,16 @@ typedef enum
 
 /** Mode controlling treatment of sorting attributes
 */
-typedef enum {
+typedef enum
+{
     TidySortAttrNone,
     TidySortAttrAlpha
 } TidyAttrSortStrategy;
 
 /* I/O and Message handling interface
 **
-** By default, Tidy will define, create and use
-** instances of input and output handlers for
+** By default, Tidy will define, create and use 
+** instances of input and output handlers for 
 ** standard C buffered I/O (i.e. FILE* stdin,
 ** FILE* stdout and FILE* stderr for content
 ** input, content output and diagnostic output,
@@ -277,14 +279,15 @@ typedef enum {
 
 /** Message severity level
 */
-typedef enum {
-    TidyInfo,           /**< Information about markup usage */
-    TidyWarning,        /**< Warning message */
-    TidyConfig,         /**< Configuration error */
-    TidyAccess,         /**< Accessibility message */
-    TidyError,          /**< Error message - output suppressed */
-    TidyBadDocument,    /**< I/O or file system error */
-    TidyFatal           /**< Crash! */
+typedef enum 
+{
+  TidyInfo,             /**< Information about markup usage */
+  TidyWarning,          /**< Warning message */
+  TidyConfig,           /**< Configuration error */
+  TidyAccess,           /**< Accessibility message */
+  TidyError,            /**< Error message - output suppressed */
+  TidyBadDocument,      /**< I/O or file system error */
+  TidyFatal             /**< Crash! */
 } TidyReportLevel;
 
 
@@ -293,21 +296,22 @@ typedef enum {
 
 /** Node types
 */
-typedef enum {
-    TidyNode_Root,      /**< Root */
-    TidyNode_DocType,   /**< DOCTYPE */
-    TidyNode_Comment,   /**< Comment */
-    TidyNode_ProcIns,   /**< Processing Instruction */
-    TidyNode_Text,      /**< Text */
-    TidyNode_Start,     /**< Start Tag */
-    TidyNode_End,       /**< End Tag */
-    TidyNode_StartEnd,  /**< Start/End (empty) Tag */
-    TidyNode_CDATA,     /**< Unparsed Text */
-    TidyNode_Section,   /**< XML Section */
-    TidyNode_Asp,       /**< ASP Source */
-    TidyNode_Jste,      /**< JSTE Source */
-    TidyNode_Php,       /**< PHP Source */
-    TidyNode_XmlDecl    /**< XML Declaration */
+typedef enum 
+{
+  TidyNode_Root,        /**< Root */
+  TidyNode_DocType,     /**< DOCTYPE */
+  TidyNode_Comment,     /**< Comment */
+  TidyNode_ProcIns,     /**< Processing Instruction */
+  TidyNode_Text,        /**< Text */
+  TidyNode_Start,       /**< Start Tag */
+  TidyNode_End,         /**< End Tag */
+  TidyNode_StartEnd,    /**< Start/End (empty) Tag */
+  TidyNode_CDATA,       /**< Unparsed Text */
+  TidyNode_Section,     /**< XML Section */
+  TidyNode_Asp,         /**< ASP Source */
+  TidyNode_Jste,        /**< JSTE Source */
+  TidyNode_Php,         /**< PHP Source */
+  TidyNode_XmlDecl      /**< XML Declaration */
 } TidyNodeType;
 
 
@@ -436,6 +440,30 @@ typedef enum
   TidyTag_XMP,      /**< XMP */
   TidyTag_NEXTID,   /**< NEXTID */
 
+  TidyTag_ARTICLE,
+  TidyTag_ASIDE,
+  TidyTag_AUDIO,
+  TidyTag_CANVAS,
+  TidyTag_COMMAND,
+  TidyTag_DATALIST,
+  TidyTag_DETAILS,
+  TidyTag_FIGCAPTION,
+  TidyTag_FIGURE,
+  TidyTag_FOOTER,
+  TidyTag_HEADER,
+  TidyTag_HGROUP,
+  TidyTag_MARK,
+  TidyTag_METER,
+  TidyTag_NAV,
+  TidyTag_OUTPUT,
+  TidyTag_PROGRESS,
+  TidyTag_SECTION,
+  TidyTag_SOURCE,
+  TidyTag_SUMMARY,
+  TidyTag_TIME,
+  TidyTag_TRACK,
+  TidyTag_VIDEO,
+
   N_TIDY_TAGS       /**< Must be last */
 } TidyTagId;
 
@@ -510,6 +538,9 @@ typedef enum
   TidyAttr_HTTP_EQUIV,        /**< HTTP_EQUIV= */
   TidyAttr_ID,                /**< ID= */
   TidyAttr_ISMAP,             /**< ISMAP= */
+  TidyAttr_ITEMPROP,          /**< ITEMPROP= */
+  TidyAttr_ITEMTYPE,          /**< ITEMTYPE= */
+  TidyAttr_ITEMSCOPE,         /**< ITEMSCOPE= */
   TidyAttr_LABEL,             /**< LABEL= */
   TidyAttr_LANG,              /**< LANG= */
   TidyAttr_LANGUAGE,          /**< LANGUAGE= */
@@ -610,10 +641,111 @@ typedef enum
   TidyAttr_SDASUFF,           /**< SDASUFF= */
   TidyAttr_URN,               /**< URN= */
 
+  TidyAttr_ASYNC,
+  TidyAttr_AUTOCOMPLETE,
+  TidyAttr_AUTOFOCUS,
+  TidyAttr_AUTOPLAY,
+  TidyAttr_CHALLENGE,
+  TidyAttr_CONTENTEDITABLE,
+  TidyAttr_CONTEXTMENU,
+  TidyAttr_CONTROLS,
+  TidyAttr_DEFAULT,
+  TidyAttr_DIRNAME,
+  TidyAttr_DRAGGABLE,
+  TidyAttr_DROPZONE,
+  TidyAttr_FORM,
+  TidyAttr_FORMACTION,
+  TidyAttr_FORMENCTYPE,
+  TidyAttr_FORMMETHOD,
+  TidyAttr_FORMNOVALIDATE,
+  TidyAttr_FORMTARGET,
+  TidyAttr_HIDDEN,
+  TidyAttr_HIGH,
+  TidyAttr_ICON,
+  TidyAttr_KEYTYPE,
+  TidyAttr_KIND,
+  TidyAttr_LIST,
+  TidyAttr_LOOP,
+  TidyAttr_LOW,
+  TidyAttr_MANIFEST,
+  TidyAttr_MAX,
+  TidyAttr_MEDIAGROUP,
+  TidyAttr_MIN,
+  TidyAttr_NOVALIDATE,
+  TidyAttr_OPEN,
+  TidyAttr_OPTIMUM,
+  TidyAttr_OnABORT,
+  TidyAttr_OnAFTERPRINT,
+  TidyAttr_OnBEFOREPRINT,
+  TidyAttr_OnCANPLAY,
+  TidyAttr_OnCANPLAYTHROUGH,
+  TidyAttr_OnCONTEXTMENU,
+  TidyAttr_OnCUECHANGE,
+  TidyAttr_OnDRAG,
+  TidyAttr_OnDRAGEND,
+  TidyAttr_OnDRAGENTER,
+  TidyAttr_OnDRAGLEAVE,
+  TidyAttr_OnDRAGOVER,
+  TidyAttr_OnDRAGSTART,
+  TidyAttr_OnDROP,
+  TidyAttr_OnDURATIONCHANGE,
+  TidyAttr_OnEMPTIED,
+  TidyAttr_OnENDED,
+  TidyAttr_OnERROR,
+  TidyAttr_OnHASHCHANGE,
+  TidyAttr_OnINPUT,
+  TidyAttr_OnINVALID,
+  TidyAttr_OnLOADEDDATA,
+  TidyAttr_OnLOADEDMETADATA,
+  TidyAttr_OnLOADSTART,
+  TidyAttr_OnMESSAGE,
+  TidyAttr_OnMOUSEWHEEL,
+  TidyAttr_OnOFFLINE,
+  TidyAttr_OnONLINE,
+  TidyAttr_OnPAGEHIDE,
+  TidyAttr_OnPAGESHOW,
+  TidyAttr_OnPAUSE,
+  TidyAttr_OnPLAY,
+  TidyAttr_OnPLAYING,
+  TidyAttr_OnPOPSTATE,
+  TidyAttr_OnPROGRESS,
+  TidyAttr_OnRATECHANGE,
+  TidyAttr_OnREADYSTATECHANGE,
+  TidyAttr_OnREDO,
+  TidyAttr_OnRESIZE,
+  TidyAttr_OnSCROLL,
+  TidyAttr_OnSEEKED,
+  TidyAttr_OnSEEKING,
+  TidyAttr_OnSHOW,
+  TidyAttr_OnSTALLED,
+  TidyAttr_OnSTORAGE,
+  TidyAttr_OnSUSPEND,
+  TidyAttr_OnTIMEUPDATE,
+  TidyAttr_OnUNDO,
+  TidyAttr_OnVOLUMECHANGE,
+  TidyAttr_OnWAITING,
+  TidyAttr_PATTERN,
+  TidyAttr_PLACEHOLDER,
+  TidyAttr_POSTER,
+  TidyAttr_PRELOAD,
+  TidyAttr_PUBDATE,
+  TidyAttr_RADIOGROUP,
+  TidyAttr_REQUIRED,
+  TidyAttr_REVERSED,
+  TidyAttr_SANDBOX,
+  TidyAttr_SCOPED,
+  TidyAttr_SEAMLESS,
+  TidyAttr_SIZES,
+  TidyAttr_SPELLCHECK,
+  TidyAttr_SRCDOC,
+  TidyAttr_SRCLANG,
+  TidyAttr_STEP,
+
+
   N_TIDY_ATTRIBS              /**< Must be last */
 } TidyAttrId;
 
 #ifdef __cplusplus
 }  /* extern "C" */
 #endif
-#endif /* __TIDYPENUM_H__ */
+#endif /* __TIDYENUM_H__ */

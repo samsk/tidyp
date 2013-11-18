@@ -88,193 +88,296 @@ static AttrCheck CheckType;
 
 static const Attribute attribute_defs [] =
 {
-  { TidyAttr_UNKNOWN,           "unknown!",          VERS_PROPRIETARY,  NULL         },
-  { TidyAttr_ABBR,              "abbr",              VERS_HTML40,       CH_PCDATA    },
-  { TidyAttr_ACCEPT,            "accept",            VERS_ALL,          CH_XTYPE     },
-  { TidyAttr_ACCEPT_CHARSET,    "accept-charset",    VERS_HTML40,       CH_CHARSET   },
-  { TidyAttr_ACCESSKEY,         "accesskey",         VERS_HTML40,       CH_CHARACTER },
-  { TidyAttr_ACTION,            "action",            VERS_ALL,          CH_ACTION    },
-  { TidyAttr_ADD_DATE,          "add_date",          VERS_NETSCAPE,     CH_PCDATA    }, /* A */
-  { TidyAttr_ALIGN,             "align",             VERS_ALL,          CH_ALIGN     }, /* varies by element */
-  { TidyAttr_ALINK,             "alink",             VERS_LOOSE,        CH_COLOR     },
-  { TidyAttr_ALT,               "alt",               VERS_ALL,          CH_PCDATA    }, /* nowrap */
-  { TidyAttr_ARCHIVE,           "archive",           VERS_HTML40,       CH_URLS      }, /* space or comma separated list */
-  { TidyAttr_AXIS,              "axis",              VERS_HTML40,       CH_PCDATA    },
-  { TidyAttr_BACKGROUND,        "background",        VERS_LOOSE,        CH_URL       },
-  { TidyAttr_BGCOLOR,           "bgcolor",           VERS_LOOSE,        CH_COLOR     },
-  { TidyAttr_BGPROPERTIES,      "bgproperties",      VERS_PROPRIETARY,  CH_PCDATA    }, /* BODY "fixed" fixes background */
-  { TidyAttr_BORDER,            "border",            VERS_ALL,          CH_BORDER    }, /* like LENGTH + "border" */
-  { TidyAttr_BORDERCOLOR,       "bordercolor",       VERS_MICROSOFT,    CH_COLOR     }, /* used on TABLE */
-  { TidyAttr_BOTTOMMARGIN,      "bottommargin",      VERS_MICROSOFT,    CH_NUMBER    }, /* used on BODY */
-  { TidyAttr_CELLPADDING,       "cellpadding",       VERS_FROM32,       CH_LENGTH    }, /* % or pixel values */
-  { TidyAttr_CELLSPACING,       "cellspacing",       VERS_FROM32,       CH_LENGTH    },
-  { TidyAttr_CHAR,              "char",              VERS_HTML40,       CH_CHARACTER },
-  { TidyAttr_CHAROFF,           "charoff",           VERS_HTML40,       CH_LENGTH    },
-  { TidyAttr_CHARSET,           "charset",           VERS_HTML40,       CH_CHARSET   },
-  { TidyAttr_CHECKED,           "checked",           VERS_ALL,          CH_BOOL      }, /* i.e. "checked" or absent */
-  { TidyAttr_CITE,              "cite",              VERS_HTML40,       CH_URL       },
-  { TidyAttr_CLASS,             "class",             VERS_HTML40,       CH_PCDATA    },
-  { TidyAttr_CLASSID,           "classid",           VERS_HTML40,       CH_URL       },
-  { TidyAttr_CLEAR,             "clear",             VERS_LOOSE,        CH_CLEAR     }, /* BR: left, right, all */
-  { TidyAttr_CODE,              "code",              VERS_LOOSE,        CH_PCDATA    }, /* APPLET */
-  { TidyAttr_CODEBASE,          "codebase",          VERS_HTML40,       CH_URL       }, /* OBJECT */
-  { TidyAttr_CODETYPE,          "codetype",          VERS_HTML40,       CH_XTYPE     }, /* OBJECT */
-  { TidyAttr_COLOR,             "color",             VERS_LOOSE,        CH_COLOR     }, /* BASEFONT, FONT */
-  { TidyAttr_COLS,              "cols",              VERS_IFRAME,       CH_COLS      }, /* TABLE & FRAMESET */
-  { TidyAttr_COLSPAN,           "colspan",           VERS_FROM32,       CH_NUMBER    },
-  { TidyAttr_COMPACT,           "compact",           VERS_ALL,          CH_BOOL      }, /* lists */
-  { TidyAttr_CONTENT,           "content",           VERS_ALL,          CH_PCDATA    },
-  { TidyAttr_COORDS,            "coords",            VERS_FROM32,       CH_COORDS    }, /* AREA, A */
-  { TidyAttr_DATA,              "data",              VERS_HTML40,       CH_URL       }, /* OBJECT */
-  { TidyAttr_DATAFLD,           "datafld",           VERS_MICROSOFT,    CH_PCDATA    }, /* used on DIV, IMG */
-  { TidyAttr_DATAFORMATAS,      "dataformatas",      VERS_MICROSOFT,    CH_PCDATA    }, /* used on DIV, IMG */
-  { TidyAttr_DATAPAGESIZE,      "datapagesize",      VERS_MICROSOFT,    CH_NUMBER    }, /* used on DIV, IMG */
-  { TidyAttr_DATASRC,           "datasrc",           VERS_MICROSOFT,    CH_URL       }, /* used on TABLE */
-  { TidyAttr_DATETIME,          "datetime",          VERS_HTML40,       CH_DATE      }, /* INS, DEL */
-  { TidyAttr_DECLARE,           "declare",           VERS_HTML40,       CH_BOOL      }, /* OBJECT */
-  { TidyAttr_DEFER,             "defer",             VERS_HTML40,       CH_BOOL      }, /* SCRIPT */
-  { TidyAttr_DIR,               "dir",               VERS_HTML40,       CH_TEXTDIR   }, /* ltr or rtl */
-  { TidyAttr_DISABLED,          "disabled",          VERS_HTML40,       CH_BOOL      }, /* form fields */
-  { TidyAttr_ENCODING,          "encoding",          VERS_XML,          CH_PCDATA    }, /* <?xml?> */
-  { TidyAttr_ENCTYPE,           "enctype",           VERS_ALL,          CH_XTYPE     }, /* FORM */
-  { TidyAttr_FACE,              "face",              VERS_LOOSE,        CH_PCDATA    }, /* BASEFONT, FONT */
-  { TidyAttr_FOR,               "for",               VERS_HTML40,       CH_IDREF     }, /* LABEL */
-  { TidyAttr_FRAME,             "frame",             VERS_HTML40,       CH_TFRAME    }, /* TABLE */
-  { TidyAttr_FRAMEBORDER,       "frameborder",       VERS_FRAMESET,     CH_FBORDER   }, /* 0 or 1 */
-  { TidyAttr_FRAMESPACING,      "framespacing",      VERS_PROPRIETARY,  CH_NUMBER    },
-  { TidyAttr_GRIDX,             "gridx",             VERS_PROPRIETARY,  CH_NUMBER    }, /* TABLE Adobe golive*/
-  { TidyAttr_GRIDY,             "gridy",             VERS_PROPRIETARY,  CH_NUMBER    }, /* TABLE Adobe golive */
-  { TidyAttr_HEADERS,           "headers",           VERS_HTML40,       CH_IDREFS    }, /* table cells */
-  { TidyAttr_HEIGHT,            "height",            VERS_ALL,          CH_LENGTH    }, /* pixels only for TH/TD */
-  { TidyAttr_HREF,              "href",              VERS_ALL,          CH_URL       }, /* A, AREA, LINK and BASE */
-  { TidyAttr_HREFLANG,          "hreflang",          VERS_HTML40,       CH_LANG      }, /* A, LINK */
-  { TidyAttr_HSPACE,            "hspace",            VERS_ALL,          CH_NUMBER    }, /* APPLET, IMG, OBJECT */
-  { TidyAttr_HTTP_EQUIV,        "http-equiv",        VERS_ALL,          CH_PCDATA    }, /* META */
-  { TidyAttr_ID,                "id",                VERS_HTML40,       CH_IDDEF     },
-  { TidyAttr_ISMAP,             "ismap",             VERS_ALL,          CH_BOOL      }, /* IMG */
-  { TidyAttr_LABEL,             "label",             VERS_HTML40,       CH_PCDATA    }, /* OPT, OPTGROUP */
-  { TidyAttr_LANG,              "lang",              VERS_HTML40,       CH_LANG      },
-  { TidyAttr_LANGUAGE,          "language",          VERS_LOOSE,        CH_PCDATA    }, /* SCRIPT */
-  { TidyAttr_LAST_MODIFIED,     "last_modified",     VERS_NETSCAPE,     CH_PCDATA    }, /* A */
-  { TidyAttr_LAST_VISIT,        "last_visit",        VERS_NETSCAPE,     CH_PCDATA    }, /* A */
-  { TidyAttr_LEFTMARGIN,        "leftmargin",        VERS_MICROSOFT,    CH_NUMBER    }, /* used on BODY */
-  { TidyAttr_LINK,              "link",              VERS_LOOSE,        CH_COLOR     }, /* BODY */
-  { TidyAttr_LONGDESC,          "longdesc",          VERS_HTML40,       CH_URL       }, /* IMG */
-  { TidyAttr_LOWSRC,            "lowsrc",            VERS_PROPRIETARY,  CH_URL       }, /* IMG */
-  { TidyAttr_MARGINHEIGHT,      "marginheight",      VERS_IFRAME,       CH_NUMBER    }, /* FRAME, IFRAME, BODY */
-  { TidyAttr_MARGINWIDTH,       "marginwidth",       VERS_IFRAME,       CH_NUMBER    }, /* ditto */
-  { TidyAttr_MAXLENGTH,         "maxlength",         VERS_ALL,          CH_NUMBER    }, /* INPUT */
-  { TidyAttr_MEDIA,             "media",             VERS_HTML40,       CH_MEDIA     }, /* STYLE, LINK */
-  { TidyAttr_METHOD,            "method",            VERS_ALL,          CH_FSUBMIT   }, /* FORM: get or post */
-  { TidyAttr_MULTIPLE,          "multiple",          VERS_ALL,          CH_BOOL      }, /* SELECT */
-  { TidyAttr_NAME,              "name",              VERS_ALL,          CH_NAME      },
-  { TidyAttr_NOHREF,            "nohref",            VERS_FROM32,       CH_BOOL      }, /* AREA */
-  { TidyAttr_NORESIZE,          "noresize",          VERS_FRAMESET,     CH_BOOL      }, /* FRAME */
-  { TidyAttr_NOSHADE,           "noshade",           VERS_LOOSE,        CH_BOOL      }, /* HR */
-  { TidyAttr_NOWRAP,            "nowrap",            VERS_LOOSE,        CH_BOOL      }, /* table cells */
-  { TidyAttr_OBJECT,            "object",            VERS_HTML40_LOOSE, CH_PCDATA    }, /* APPLET */
-  { TidyAttr_OnAFTERUPDATE,     "onafterupdate",     VERS_MICROSOFT,    CH_SCRIPT    },
-  { TidyAttr_OnBEFOREUNLOAD,    "onbeforeunload",    VERS_MICROSOFT,    CH_SCRIPT    },
-  { TidyAttr_OnBEFOREUPDATE,    "onbeforeupdate",    VERS_MICROSOFT,    CH_SCRIPT    },
-  { TidyAttr_OnBLUR,            "onblur",            VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnCHANGE,          "onchange",          VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnCLICK,           "onclick",           VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnDATAAVAILABLE,   "ondataavailable",   VERS_MICROSOFT,    CH_SCRIPT    }, /* object, applet */
-  { TidyAttr_OnDATASETCHANGED,  "ondatasetchanged",  VERS_MICROSOFT,    CH_SCRIPT    }, /* object, applet */
-  { TidyAttr_OnDATASETCOMPLETE, "ondatasetcomplete", VERS_MICROSOFT,    CH_SCRIPT    },
-  { TidyAttr_OnDBLCLICK,        "ondblclick",        VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnERRORUPDATE,     "onerrorupdate",     VERS_MICROSOFT,    CH_SCRIPT    }, /* form fields */
-  { TidyAttr_OnFOCUS,           "onfocus",           VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnKEYDOWN,         "onkeydown",         VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnKEYPRESS,        "onkeypress",        VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnKEYUP,           "onkeyup",           VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnLOAD,            "onload",            VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnMOUSEDOWN,       "onmousedown",       VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnMOUSEMOVE,       "onmousemove",       VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnMOUSEOUT,        "onmouseout",        VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnMOUSEOVER,       "onmouseover",       VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnMOUSEUP,         "onmouseup",         VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnRESET,           "onreset",           VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnROWENTER,        "onrowenter",        VERS_MICROSOFT,    CH_SCRIPT    }, /* form fields */
-  { TidyAttr_OnROWEXIT,         "onrowexit",         VERS_MICROSOFT,    CH_SCRIPT    }, /* form fields */
-  { TidyAttr_OnSELECT,          "onselect",          VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnSUBMIT,          "onsubmit",          VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_OnUNLOAD,          "onunload",          VERS_EVENTS,       CH_SCRIPT    }, /* event */
-  { TidyAttr_PROFILE,           "profile",           VERS_HTML40,       CH_URL       }, /* HEAD */
-  { TidyAttr_PROMPT,            "prompt",            VERS_LOOSE,        CH_PCDATA    }, /* ISINDEX */
-  { TidyAttr_RBSPAN,            "rbspan",            VERS_XHTML11,      CH_NUMBER    }, /* ruby markup */
-  { TidyAttr_READONLY,          "readonly",          VERS_HTML40,       CH_BOOL      }, /* form fields */
-  { TidyAttr_REL,               "rel",               VERS_ALL,          CH_LINKTYPES },
-  { TidyAttr_REV,               "rev",               VERS_ALL,          CH_LINKTYPES },
-  { TidyAttr_RIGHTMARGIN,       "rightmargin",       VERS_MICROSOFT,    CH_NUMBER    }, /* used on BODY */
-  { TidyAttr_ROWS,              "rows",              VERS_ALL,          CH_NUMBER    }, /* TEXTAREA */
-  { TidyAttr_ROWSPAN,           "rowspan",           VERS_ALL,          CH_NUMBER    }, /* table cells */
-  { TidyAttr_RULES,             "rules",             VERS_HTML40,       CH_TRULES    }, /* TABLE */
-  { TidyAttr_SCHEME,            "scheme",            VERS_HTML40,       CH_PCDATA    }, /* META */
-  { TidyAttr_SCOPE,             "scope",             VERS_HTML40,       CH_SCOPE     }, /* table cells */
-  { TidyAttr_SCROLLING,         "scrolling",         VERS_IFRAME,       CH_SCROLL    }, /* yes, no or auto */
-  { TidyAttr_SELECTED,          "selected",          VERS_ALL,          CH_BOOL      }, /* OPTION */
-  { TidyAttr_SHAPE,             "shape",             VERS_FROM32,       CH_SHAPE     }, /* AREA, A */
-  { TidyAttr_SHOWGRID,          "showgrid",          VERS_PROPRIETARY,  CH_BOOL      }, /* TABLE Adobe golive */
-  { TidyAttr_SHOWGRIDX,         "showgridx",         VERS_PROPRIETARY,  CH_BOOL      }, /* TABLE Adobe golive*/
-  { TidyAttr_SHOWGRIDY,         "showgridy",         VERS_PROPRIETARY,  CH_BOOL      }, /* TABLE Adobe golive*/
-  { TidyAttr_SIZE,              "size",              VERS_LOOSE,        CH_NUMBER    }, /* HR, FONT, BASEFONT, SELECT */
-  { TidyAttr_SPAN,              "span",              VERS_HTML40,       CH_NUMBER    }, /* COL, COLGROUP */
-  { TidyAttr_SRC,               "src",               VERS_ALL,          CH_URL       }, /* IMG, FRAME, IFRAME */
-  { TidyAttr_STANDBY,           "standby",           VERS_HTML40,       CH_PCDATA    }, /* OBJECT */
-  { TidyAttr_START,             "start",             VERS_ALL,          CH_NUMBER    }, /* OL */
-  { TidyAttr_STYLE,             "style",             VERS_HTML40,       CH_PCDATA    },
-  { TidyAttr_SUMMARY,           "summary",           VERS_HTML40,       CH_PCDATA    }, /* TABLE */
-  { TidyAttr_TABINDEX,          "tabindex",          VERS_HTML40,       CH_NUMBER    }, /* fields, OBJECT  and A */
-  { TidyAttr_TARGET,            "target",            VERS_HTML40,       CH_TARGET    }, /* names a frame/window */
-  { TidyAttr_TEXT,              "text",              VERS_LOOSE,        CH_COLOR     }, /* BODY */
-  { TidyAttr_TITLE,             "title",             VERS_HTML40,       CH_PCDATA    }, /* text tool tip */
-  { TidyAttr_TOPMARGIN,         "topmargin",         VERS_MICROSOFT,    CH_NUMBER    }, /* used on BODY */
-  { TidyAttr_TYPE,              "type",              VERS_FROM32,       CH_TYPE      }, /* also used by SPACER */
-  { TidyAttr_USEMAP,            "usemap",            VERS_ALL,          CH_URL       }, /* things with images */
-  { TidyAttr_VALIGN,            "valign",            VERS_FROM32,       CH_VALIGN    },
-  { TidyAttr_VALUE,             "value",             VERS_ALL,          CH_PCDATA    },
-  { TidyAttr_VALUETYPE,         "valuetype",         VERS_HTML40,       CH_VTYPE     }, /* PARAM: data, ref, object */
-  { TidyAttr_VERSION,           "version",           VERS_ALL|VERS_XML, CH_PCDATA    }, /* HTML <?xml?> */
-  { TidyAttr_VLINK,             "vlink",             VERS_LOOSE,        CH_COLOR     }, /* BODY */
-  { TidyAttr_VSPACE,            "vspace",            VERS_LOOSE,        CH_NUMBER    }, /* IMG, OBJECT, APPLET */
-  { TidyAttr_WIDTH,             "width",             VERS_ALL,          CH_LENGTH    }, /* pixels only for TD/TH */
-  { TidyAttr_WRAP,              "wrap",              VERS_NETSCAPE,     CH_PCDATA    }, /* textarea */
-  { TidyAttr_XML_LANG,          "xml:lang",          VERS_XML,          CH_LANG      }, /* XML language */
-  { TidyAttr_XML_SPACE,         "xml:space",         VERS_XML,          CH_PCDATA    }, /* XML white space */
+  { TidyAttr_UNKNOWN,           "unknown!",              NULL         }, 
+  { TidyAttr_ABBR,              "abbr",                  CH_PCDATA    }, 
+  { TidyAttr_ACCEPT,            "accept",                CH_XTYPE     }, 
+  { TidyAttr_ACCEPT_CHARSET,    "accept-charset",        CH_CHARSET   }, 
+  { TidyAttr_ACCESSKEY,         "accesskey",             CH_CHARACTER }, 
+  { TidyAttr_ACTION,            "action",                CH_ACTION    }, 
+  { TidyAttr_ADD_DATE,          "add_date",              CH_PCDATA    }, /* A */
+  { TidyAttr_ALIGN,             "align",                 CH_ALIGN     }, /* varies by element */
+  { TidyAttr_ALINK,             "alink",                 CH_COLOR     }, 
+  { TidyAttr_ALT,               "alt",                   CH_PCDATA    }, /* nowrap */
+  { TidyAttr_ARCHIVE,           "archive",               CH_URLS      }, /* space or comma separated list */
+  { TidyAttr_AXIS,              "axis",                  CH_PCDATA    }, 
+  { TidyAttr_BACKGROUND,        "background",            CH_URL       }, 
+  { TidyAttr_BGCOLOR,           "bgcolor",               CH_COLOR     }, 
+  { TidyAttr_BGPROPERTIES,      "bgproperties",          CH_PCDATA    }, /* BODY "fixed" fixes background */
+  { TidyAttr_BORDER,            "border",                CH_BORDER    }, /* like LENGTH + "border" */
+  { TidyAttr_BORDERCOLOR,       "bordercolor",           CH_COLOR     }, /* used on TABLE */
+  { TidyAttr_BOTTOMMARGIN,      "bottommargin",          CH_NUMBER    }, /* used on BODY */
+  { TidyAttr_CELLPADDING,       "cellpadding",           CH_LENGTH    }, /* % or pixel values */
+  { TidyAttr_CELLSPACING,       "cellspacing",           CH_LENGTH    }, 
+  { TidyAttr_CHAR,              "char",                  CH_CHARACTER }, 
+  { TidyAttr_CHAROFF,           "charoff",               CH_LENGTH    }, 
+  { TidyAttr_CHARSET,           "charset",               CH_CHARSET   }, 
+  { TidyAttr_CHECKED,           "checked",               CH_BOOL      }, /* i.e. "checked" or absent */
+  { TidyAttr_CITE,              "cite",                  CH_URL       }, 
+  { TidyAttr_CLASS,             "class",                 CH_PCDATA    }, 
+  { TidyAttr_CLASSID,           "classid",               CH_URL       }, 
+  { TidyAttr_CLEAR,             "clear",                 CH_CLEAR     }, /* BR: left, right, all */
+  { TidyAttr_CODE,              "code",                  CH_PCDATA    }, /* APPLET */
+  { TidyAttr_CODEBASE,          "codebase",              CH_URL       }, /* OBJECT */
+  { TidyAttr_CODETYPE,          "codetype",              CH_XTYPE     }, /* OBJECT */
+  { TidyAttr_COLOR,             "color",                 CH_COLOR     }, /* BASEFONT, FONT */
+  { TidyAttr_COLS,              "cols",                  CH_COLS      }, /* TABLE & FRAMESET */
+  { TidyAttr_COLSPAN,           "colspan",               CH_NUMBER    }, 
+  { TidyAttr_COMPACT,           "compact",               CH_BOOL      }, /* lists */
+  { TidyAttr_CONTENT,           "content",               CH_PCDATA    }, 
+  { TidyAttr_COORDS,            "coords",                CH_COORDS    }, /* AREA, A */
+  { TidyAttr_DATA,              "data",                  CH_URL       }, /* OBJECT */
+  { TidyAttr_DATAFLD,           "datafld",               CH_PCDATA    }, /* used on DIV, IMG */
+  { TidyAttr_DATAFORMATAS,      "dataformatas",          CH_PCDATA    }, /* used on DIV, IMG */
+  { TidyAttr_DATAPAGESIZE,      "datapagesize",          CH_NUMBER    }, /* used on DIV, IMG */
+  { TidyAttr_DATASRC,           "datasrc",               CH_URL       }, /* used on TABLE */
+  { TidyAttr_DATETIME,          "datetime",              CH_DATE      }, /* INS, DEL */
+  { TidyAttr_DECLARE,           "declare",               CH_BOOL      }, /* OBJECT */
+  { TidyAttr_DEFER,             "defer",                 CH_BOOL      }, /* SCRIPT */
+  { TidyAttr_DIR,               "dir",                   CH_TEXTDIR   }, /* ltr or rtl */
+  { TidyAttr_DISABLED,          "disabled",              CH_BOOL      }, /* form fields */
+  { TidyAttr_ENCODING,          "encoding",              CH_PCDATA    }, /* <?xml?> */
+  { TidyAttr_ENCTYPE,           "enctype",               CH_XTYPE     }, /* FORM */
+  { TidyAttr_FACE,              "face",                  CH_PCDATA    }, /* BASEFONT, FONT */
+  { TidyAttr_FOR,               "for",                   CH_IDREF     }, /* LABEL */
+  { TidyAttr_FRAME,             "frame",                 CH_TFRAME    }, /* TABLE */
+  { TidyAttr_FRAMEBORDER,       "frameborder",           CH_FBORDER   }, /* 0 or 1 */
+  { TidyAttr_FRAMESPACING,      "framespacing",          CH_NUMBER    }, 
+  { TidyAttr_GRIDX,             "gridx",                 CH_NUMBER    }, /* TABLE Adobe golive*/
+  { TidyAttr_GRIDY,             "gridy",                 CH_NUMBER    }, /* TABLE Adobe golive */
+  { TidyAttr_HEADERS,           "headers",               CH_IDREFS    }, /* table cells */
+  { TidyAttr_HEIGHT,            "height",                CH_LENGTH    }, /* pixels only for TH/TD */
+  { TidyAttr_HREF,              "href",                  CH_URL       }, /* A, AREA, LINK and BASE */
+  { TidyAttr_HREFLANG,          "hreflang",              CH_LANG      }, /* A, LINK */
+  { TidyAttr_HSPACE,            "hspace",                CH_NUMBER    }, /* APPLET, IMG, OBJECT */
+  { TidyAttr_HTTP_EQUIV,        "http-equiv",            CH_PCDATA    }, /* META */
+  { TidyAttr_ID,                "id",                    CH_IDDEF     }, 
+  { TidyAttr_ISMAP,             "ismap",                 CH_BOOL      }, /* IMG */
+  { TidyAttr_ITEMPROP,          "itemprop",              CH_PCDATA    }, 
+  { TidyAttr_LABEL,             "label",                 CH_PCDATA    }, /* OPT, OPTGROUP */
+  { TidyAttr_LANG,              "lang",                  CH_LANG      }, 
+  { TidyAttr_LANGUAGE,          "language",              CH_PCDATA    }, /* SCRIPT */
+  { TidyAttr_LAST_MODIFIED,     "last_modified",         CH_PCDATA    }, /* A */
+  { TidyAttr_LAST_VISIT,        "last_visit",            CH_PCDATA    }, /* A */
+  { TidyAttr_LEFTMARGIN,        "leftmargin",            CH_NUMBER    }, /* used on BODY */
+  { TidyAttr_LINK,              "link",                  CH_COLOR     }, /* BODY */
+  { TidyAttr_LONGDESC,          "longdesc",              CH_URL       }, /* IMG */
+  { TidyAttr_LOWSRC,            "lowsrc",                CH_URL       }, /* IMG */
+  { TidyAttr_MARGINHEIGHT,      "marginheight",          CH_NUMBER    }, /* FRAME, IFRAME, BODY */
+  { TidyAttr_MARGINWIDTH,       "marginwidth",           CH_NUMBER    }, /* ditto */
+  { TidyAttr_MAXLENGTH,         "maxlength",             CH_NUMBER    }, /* INPUT */
+  { TidyAttr_MEDIA,             "media",                 CH_MEDIA     }, /* STYLE, LINK */
+  { TidyAttr_METHOD,            "method",                CH_FSUBMIT   }, /* FORM: get or post */
+  { TidyAttr_MULTIPLE,          "multiple",              CH_BOOL      }, /* SELECT */
+  { TidyAttr_NAME,              "name",                  CH_NAME      }, 
+  { TidyAttr_NOHREF,            "nohref",                CH_BOOL      }, /* AREA */
+  { TidyAttr_NORESIZE,          "noresize",              CH_BOOL      }, /* FRAME */
+  { TidyAttr_NOSHADE,           "noshade",               CH_BOOL      }, /* HR */
+  { TidyAttr_NOWRAP,            "nowrap",                CH_BOOL      }, /* table cells */
+  { TidyAttr_OBJECT,            "object",                CH_PCDATA    }, /* APPLET */
+  { TidyAttr_OnAFTERUPDATE,     "onafterupdate",         CH_SCRIPT    }, 
+  { TidyAttr_OnBEFOREUNLOAD,    "onbeforeunload",        CH_SCRIPT    }, 
+  { TidyAttr_OnBEFOREUPDATE,    "onbeforeupdate",        CH_SCRIPT    }, 
+  { TidyAttr_OnBLUR,            "onblur",                CH_SCRIPT    }, /* event */
+  { TidyAttr_OnCHANGE,          "onchange",              CH_SCRIPT    }, /* event */
+  { TidyAttr_OnCLICK,           "onclick",               CH_SCRIPT    }, /* event */
+  { TidyAttr_OnDATAAVAILABLE,   "ondataavailable",       CH_SCRIPT    }, /* object, applet */
+  { TidyAttr_OnDATASETCHANGED,  "ondatasetchanged",      CH_SCRIPT    }, /* object, applet */
+  { TidyAttr_OnDATASETCOMPLETE, "ondatasetcomplete",     CH_SCRIPT    }, 
+  { TidyAttr_OnDBLCLICK,        "ondblclick",            CH_SCRIPT    }, /* event */
+  { TidyAttr_OnERRORUPDATE,     "onerrorupdate",         CH_SCRIPT    }, /* form fields */
+  { TidyAttr_OnFOCUS,           "onfocus",               CH_SCRIPT    }, /* event */
+  { TidyAttr_OnKEYDOWN,         "onkeydown",             CH_SCRIPT    }, /* event */
+  { TidyAttr_OnKEYPRESS,        "onkeypress",            CH_SCRIPT    }, /* event */
+  { TidyAttr_OnKEYUP,           "onkeyup",               CH_SCRIPT    }, /* event */
+  { TidyAttr_OnLOAD,            "onload",                CH_SCRIPT    }, /* event */
+  { TidyAttr_OnMOUSEDOWN,       "onmousedown",           CH_SCRIPT    }, /* event */
+  { TidyAttr_OnMOUSEMOVE,       "onmousemove",           CH_SCRIPT    }, /* event */
+  { TidyAttr_OnMOUSEOUT,        "onmouseout",            CH_SCRIPT    }, /* event */
+  { TidyAttr_OnMOUSEOVER,       "onmouseover",           CH_SCRIPT    }, /* event */
+  { TidyAttr_OnMOUSEUP,         "onmouseup",             CH_SCRIPT    }, /* event */
+  { TidyAttr_OnRESET,           "onreset",               CH_SCRIPT    }, /* event */
+  { TidyAttr_OnROWENTER,        "onrowenter",            CH_SCRIPT    }, /* form fields */
+  { TidyAttr_OnROWEXIT,         "onrowexit",             CH_SCRIPT    }, /* form fields */
+  { TidyAttr_OnSELECT,          "onselect",              CH_SCRIPT    }, /* event */
+  { TidyAttr_OnSUBMIT,          "onsubmit",              CH_SCRIPT    }, /* event */
+  { TidyAttr_OnUNLOAD,          "onunload",              CH_SCRIPT    }, /* event */
+  { TidyAttr_PROFILE,           "profile",               CH_URL       }, /* HEAD */
+  { TidyAttr_PROMPT,            "prompt",                CH_PCDATA    }, /* ISINDEX */
+  { TidyAttr_RBSPAN,            "rbspan",                CH_NUMBER    }, /* ruby markup */
+  { TidyAttr_READONLY,          "readonly",              CH_BOOL      }, /* form fields */
+  { TidyAttr_REL,               "rel",                   CH_LINKTYPES }, 
+  { TidyAttr_REV,               "rev",                   CH_LINKTYPES }, 
+  { TidyAttr_RIGHTMARGIN,       "rightmargin",           CH_NUMBER    }, /* used on BODY */
+  { TidyAttr_ROWS,              "rows",                  CH_NUMBER    }, /* TEXTAREA */
+  { TidyAttr_ROWSPAN,           "rowspan",               CH_NUMBER    }, /* table cells */
+  { TidyAttr_RULES,             "rules",                 CH_TRULES    }, /* TABLE */
+  { TidyAttr_SCHEME,            "scheme",                CH_PCDATA    }, /* META */
+  { TidyAttr_SCOPE,             "scope",                 CH_SCOPE     }, /* table cells */
+  { TidyAttr_SCROLLING,         "scrolling",             CH_SCROLL    }, /* yes, no or auto */
+  { TidyAttr_SELECTED,          "selected",              CH_BOOL      }, /* OPTION */
+  { TidyAttr_SHAPE,             "shape",                 CH_SHAPE     }, /* AREA, A */
+  { TidyAttr_SHOWGRID,          "showgrid",              CH_BOOL      }, /* TABLE Adobe golive */
+  { TidyAttr_SHOWGRIDX,         "showgridx",             CH_BOOL      }, /* TABLE Adobe golive*/
+  { TidyAttr_SHOWGRIDY,         "showgridy",             CH_BOOL      }, /* TABLE Adobe golive*/
+  { TidyAttr_SIZE,              "size",                  CH_NUMBER    }, /* HR, FONT, BASEFONT, SELECT */
+  { TidyAttr_SPAN,              "span",                  CH_NUMBER    }, /* COL, COLGROUP */
+  { TidyAttr_SRC,               "src",                   CH_URL       }, /* IMG, FRAME, IFRAME */
+  { TidyAttr_STANDBY,           "standby",               CH_PCDATA    }, /* OBJECT */
+  { TidyAttr_START,             "start",                 CH_NUMBER    }, /* OL */
+  { TidyAttr_STYLE,             "style",                 CH_PCDATA    }, 
+  { TidyAttr_SUMMARY,           "summary",               CH_PCDATA    }, /* TABLE */
+  { TidyAttr_TABINDEX,          "tabindex",              CH_NUMBER    }, /* fields, OBJECT  and A */
+  { TidyAttr_TARGET,            "target",                CH_TARGET    }, /* names a frame/window */
+  { TidyAttr_TEXT,              "text",                  CH_COLOR     }, /* BODY */
+  { TidyAttr_TITLE,             "title",                 CH_PCDATA    }, /* text tool tip */
+  { TidyAttr_TOPMARGIN,         "topmargin",             CH_NUMBER    }, /* used on BODY */
+  { TidyAttr_TYPE,              "type",                  CH_TYPE      }, /* also used by SPACER */
+  { TidyAttr_USEMAP,            "usemap",                CH_URL       }, /* things with images */
+  { TidyAttr_VALIGN,            "valign",                CH_VALIGN    }, 
+  { TidyAttr_VALUE,             "value",                 CH_PCDATA    }, 
+  { TidyAttr_VALUETYPE,         "valuetype",             CH_VTYPE     }, /* PARAM: data, ref, object */
+  { TidyAttr_VERSION,           "version",               CH_PCDATA    }, /* HTML <?xml?> */
+  { TidyAttr_VLINK,             "vlink",                 CH_COLOR     }, /* BODY */
+  { TidyAttr_VSPACE,            "vspace",                CH_NUMBER    }, /* IMG, OBJECT, APPLET */
+  { TidyAttr_WIDTH,             "width",                 CH_LENGTH    }, /* pixels only for TD/TH */
+  { TidyAttr_WRAP,              "wrap",                  CH_PCDATA    }, /* textarea */
+  { TidyAttr_XML_LANG,          "xml:lang",              CH_LANG      }, /* XML language */
+  { TidyAttr_XML_SPACE,         "xml:space",             CH_PCDATA    }, /* XML white space */
 
   /* todo: VERS_ALL is wrong! */
-  { TidyAttr_XMLNS,             "xmlns",             VERS_ALL,          CH_PCDATA    }, /* name space */
-  { TidyAttr_EVENT,             "event",             VERS_HTML40,       CH_PCDATA    }, /* reserved for <script> */
-  { TidyAttr_METHODS,           "methods",           VERS_HTML20,       CH_PCDATA    }, /* for <a>, never implemented */
-  { TidyAttr_N,                 "n",                 VERS_HTML20,       CH_PCDATA    }, /* for <nextid> */
-  { TidyAttr_SDAFORM,           "sdaform",           VERS_HTML20,       CH_PCDATA    }, /* SDATA attribute in HTML 2.0 */
-  { TidyAttr_SDAPREF,           "sdapref",           VERS_HTML20,       CH_PCDATA    }, /* SDATA attribute in HTML 2.0 */
-  { TidyAttr_SDASUFF,           "sdasuff",           VERS_HTML20,       CH_PCDATA    }, /* SDATA attribute in HTML 2.0 */
-  { TidyAttr_URN,               "urn",               VERS_HTML20,       CH_PCDATA    }, /* for <a>, never implemented */
+  { TidyAttr_XMLNS,             "xmlns",                 CH_PCDATA    }, /* name space */
+  { TidyAttr_EVENT,             "event",                 CH_PCDATA    }, /* reserved for <script> */
+  { TidyAttr_METHODS,           "methods",               CH_PCDATA    }, /* for <a>, never implemented */
+  { TidyAttr_N,                 "n",                     CH_PCDATA    }, /* for <nextid> */
+  { TidyAttr_SDAFORM,           "sdaform",               CH_PCDATA    }, /* SDATA attribute in HTML 2.0 */
+  { TidyAttr_SDAPREF,           "sdapref",               CH_PCDATA    }, /* SDATA attribute in HTML 2.0 */
+  { TidyAttr_SDASUFF,           "sdasuff",               CH_PCDATA    }, /* SDATA attribute in HTML 2.0 */
+  { TidyAttr_URN,               "urn",                   CH_PCDATA    }, /* for <a>, never implemented */
+
+  /* HTML5 */
+  { TidyAttr_ASYNC,             "async",                 CH_PCDATA    },
+  { TidyAttr_AUTOCOMPLETE,      "autocomplete",          CH_PCDATA    },
+  { TidyAttr_AUTOFOCUS,         "autofocus",             CH_PCDATA    },
+  { TidyAttr_AUTOPLAY,          "autoplay",              CH_PCDATA    },
+  { TidyAttr_CHALLENGE,         "challenge",             CH_PCDATA    },
+  { TidyAttr_CONTENTEDITABLE,   "contenteditable",       CH_PCDATA    },
+  { TidyAttr_CONTEXTMENU,       "contextmenu",           CH_PCDATA    },
+  { TidyAttr_CONTROLS,          "controls",              CH_PCDATA    },
+  { TidyAttr_DEFAULT,           "default",               CH_PCDATA    },
+  { TidyAttr_DIRNAME,           "dirname",               CH_PCDATA    },
+  { TidyAttr_DRAGGABLE,         "draggable",             CH_PCDATA    },
+  { TidyAttr_DROPZONE,          "dropzone",              CH_PCDATA    },
+  { TidyAttr_FORM,              "form",                  CH_PCDATA    },
+  { TidyAttr_FORMACTION,        "formaction",            CH_PCDATA    },
+  { TidyAttr_FORMENCTYPE,       "formenctype",           CH_PCDATA    },
+  { TidyAttr_FORMMETHOD,        "formmethod",            CH_PCDATA    },
+  { TidyAttr_FORMNOVALIDATE,    "formnovalidate",        CH_PCDATA    },
+  { TidyAttr_FORMTARGET,        "formtarget",            CH_PCDATA    },
+  { TidyAttr_HIDDEN,            "hidden",                CH_PCDATA    },
+  { TidyAttr_HIGH,              "high",                  CH_PCDATA    },
+  { TidyAttr_ICON,              "icon",                  CH_PCDATA    },
+  { TidyAttr_KEYTYPE,           "keytype",               CH_PCDATA    },
+  { TidyAttr_KIND,              "kind",                  CH_PCDATA    },
+  { TidyAttr_LIST,              "list",                  CH_PCDATA    },
+  { TidyAttr_LOOP,              "loop",                  CH_PCDATA    },
+  { TidyAttr_LOW,               "low",                   CH_PCDATA    },
+  { TidyAttr_MANIFEST,          "manifest",              CH_PCDATA    },
+  { TidyAttr_MAX,               "max",                   CH_PCDATA    },
+  { TidyAttr_MEDIAGROUP,        "mediagroup",            CH_PCDATA    },
+  { TidyAttr_MIN,               "min",                   CH_PCDATA    },
+  { TidyAttr_NOVALIDATE,        "novalidate",            CH_PCDATA    },
+  { TidyAttr_OPEN,              "open",                  CH_PCDATA    },
+  { TidyAttr_OPTIMUM,           "optimum",               CH_PCDATA    },
+  { TidyAttr_OnABORT,           "onabort",               CH_PCDATA    },
+  { TidyAttr_OnAFTERPRINT,      "onafterprint",          CH_PCDATA    },
+  { TidyAttr_OnBEFOREPRINT,     "onbeforeprint",         CH_PCDATA    },
+  { TidyAttr_OnCANPLAY,         "oncanplay",             CH_PCDATA    },
+  { TidyAttr_OnCANPLAYTHROUGH,  "oncanplaythrough",      CH_PCDATA    },
+  { TidyAttr_OnCONTEXTMENU,     "oncontextmenu",         CH_PCDATA    },
+  { TidyAttr_OnCUECHANGE,       "oncuechange",           CH_PCDATA    },
+  { TidyAttr_OnDRAG,            "ondrag",                CH_PCDATA    },
+  { TidyAttr_OnDRAGEND,         "ondragend",             CH_PCDATA    },
+  { TidyAttr_OnDRAGENTER,       "ondragenter",           CH_PCDATA    },
+  { TidyAttr_OnDRAGLEAVE,       "ondragleave",           CH_PCDATA    },
+  { TidyAttr_OnDRAGOVER,        "ondragover",            CH_PCDATA    },
+  { TidyAttr_OnDRAGSTART,       "ondragstart",           CH_PCDATA    },
+  { TidyAttr_OnDROP,            "ondrop",                CH_PCDATA    },
+  { TidyAttr_OnDURATIONCHANGE,  "ondurationchange",      CH_PCDATA    },
+  { TidyAttr_OnEMPTIED,         "onemptied",             CH_PCDATA    },
+  { TidyAttr_OnENDED,           "onended",               CH_PCDATA    },
+  { TidyAttr_OnERROR,           "onerror",               CH_PCDATA    },
+  { TidyAttr_OnHASHCHANGE,      "onhashchange",          CH_PCDATA    },
+  { TidyAttr_OnINPUT,           "oninput",               CH_PCDATA    },
+  { TidyAttr_OnINVALID,         "oninvalid",             CH_PCDATA    },
+  { TidyAttr_OnLOADEDDATA,      "onloadeddata",          CH_PCDATA    },
+  { TidyAttr_OnLOADEDMETADATA,  "onloadedmetadata",      CH_PCDATA    },
+  { TidyAttr_OnLOADSTART,       "onloadstart",           CH_PCDATA    },
+  { TidyAttr_OnMESSAGE,         "onmessage",             CH_PCDATA    },
+  { TidyAttr_OnMOUSEWHEEL,      "onmousewheel",          CH_PCDATA    },
+  { TidyAttr_OnOFFLINE,         "onoffline",             CH_PCDATA    },
+  { TidyAttr_OnONLINE,          "ononline",              CH_PCDATA    },
+  { TidyAttr_OnPAGEHIDE,        "onpagehide",            CH_PCDATA    },
+  { TidyAttr_OnPAGESHOW,        "onpageshow",            CH_PCDATA    },
+  { TidyAttr_OnPAUSE,           "onpause",               CH_PCDATA    },
+  { TidyAttr_OnPLAY,            "onplay",                CH_PCDATA    },
+  { TidyAttr_OnPLAYING,         "onplaying",             CH_PCDATA    },
+  { TidyAttr_OnPOPSTATE,        "onpopstate",            CH_PCDATA    },
+  { TidyAttr_OnPROGRESS,        "onprogress",            CH_PCDATA    },
+  { TidyAttr_OnRATECHANGE,      "onratechange",          CH_PCDATA    },
+  { TidyAttr_OnREADYSTATECHANGE,"onreadystatechange",    CH_PCDATA    },
+  { TidyAttr_OnREDO,            "onredo",                CH_PCDATA    },
+  { TidyAttr_OnRESIZE,          "onresize",              CH_PCDATA    },
+  { TidyAttr_OnSCROLL,          "onscroll",              CH_PCDATA    },
+  { TidyAttr_OnSEEKED,          "onseeked",              CH_PCDATA    },
+  { TidyAttr_OnSEEKING,         "onseeking",             CH_PCDATA    },
+  { TidyAttr_OnSHOW,            "onshow",                CH_PCDATA    },
+  { TidyAttr_OnSTALLED,         "onstalled",             CH_PCDATA    },
+  { TidyAttr_OnSTORAGE,         "onstorage",             CH_PCDATA    },
+  { TidyAttr_OnSUSPEND,         "onsuspend",             CH_PCDATA    },
+  { TidyAttr_OnTIMEUPDATE,      "ontimeupdate",          CH_PCDATA    },
+  { TidyAttr_OnUNDO,            "onundo",                CH_PCDATA    },
+  { TidyAttr_OnVOLUMECHANGE,    "onvolumechange",        CH_PCDATA    },
+  { TidyAttr_OnWAITING,         "onwaiting",             CH_PCDATA    },
+  { TidyAttr_PATTERN,           "pattern",               CH_PCDATA    },
+  { TidyAttr_PLACEHOLDER,       "placeholder",           CH_PCDATA    },
+  { TidyAttr_POSTER,            "poster",                CH_PCDATA    },
+  { TidyAttr_PRELOAD,           "preload",               CH_PCDATA    },
+  { TidyAttr_PUBDATE,           "pubdate",               CH_PCDATA    },
+  { TidyAttr_RADIOGROUP,        "radiogroup",            CH_PCDATA    },
+  { TidyAttr_REQUIRED,          "required",              CH_PCDATA    },
+  { TidyAttr_REVERSED,          "reversed",              CH_PCDATA    },
+  { TidyAttr_SANDBOX,           "sandbox",               CH_PCDATA    },
+  { TidyAttr_SCOPED,            "scoped",                CH_PCDATA    },
+  { TidyAttr_SEAMLESS,          "seamless",              CH_PCDATA    },
+  { TidyAttr_SIZES,             "sizes",                 CH_PCDATA    },
+  { TidyAttr_SPELLCHECK,        "spellcheck",            CH_PCDATA    },
+  { TidyAttr_SRCDOC,            "srcdoc",                CH_PCDATA    },
+  { TidyAttr_SRCLANG,           "srclang",               CH_PCDATA    },
+  { TidyAttr_STEP,              "step",                  CH_PCDATA    },
 
   /* this must be the final entry */
-  { N_TIDY_ATTRIBS,             NULL,                VERS_UNKNOWN,      NULL         }
+  { N_TIDY_ATTRIBS,             NULL,                    NULL         }
 };
 
 static uint AttributeVersions(Node* node, AttVal* attval)
 {
     uint i;
 
+    /* HTML5 data-* attributes */
+    if (attval && attval->attribute)
+        if (TY_(tmbstrncmp)(attval->attribute, "data-", 5) == 0)
+            return (XH50 | HT50);
+
+    /* TODO: maybe this should return VERS_PROPRIETARY instead? */
     if (!attval || !attval->dict)
         return VERS_UNKNOWN;
 
-    if (!node || !node->tag || !node->tag->attrvers)
-        return attval->dict->versions;
+    if (!(!node || !node->tag || !node->tag->attrvers))
+        for (i = 0; node->tag->attrvers[i].attribute; ++i)
+            if (node->tag->attrvers[i].attribute == attval->dict->id)
+                return node->tag->attrvers[i].versions;
 
-    for (i = 0; node->tag->attrvers[i].attribute; ++i)
-        if (node->tag->attrvers[i].attribute == attval->dict->id)
-            return node->tag->attrvers[i].versions;
-
-    return attval->dict->versions & VERS_ALL
-             ? VERS_UNKNOWN
-             : attval->dict->versions;
-
+    return VERS_PROPRIETARY;
 }
 
 
@@ -362,6 +465,153 @@ static ctmbstr GetColorName(ctmbstr code)
     return NULL;
 }
 
+#if 0
+static const struct _colors fancy_colors[] =
+{
+    { "darkgreen",            "#006400" },
+    { "antiquewhite",         "#FAEBD7" },
+    { "aqua",                 "#00FFFF" },
+    { "aquamarine",           "#7FFFD4" },
+    { "azure",                "#F0FFFF" },
+    { "beige",                "#F5F5DC" },
+    { "bisque",               "#FFE4C4" },
+    { "black",                "#000000" },
+    { "blanchedalmond",       "#FFEBCD" },
+    { "blue",                 "#0000FF" },
+    { "blueviolet",           "#8A2BE2" },
+    { "brown",                "#A52A2A" },
+    { "burlywood",            "#DEB887" },
+    { "cadetblue",            "#5F9EA0" },
+    { "chartreuse",           "#7FFF00" },
+    { "chocolate",            "#D2691E" },
+    { "coral",                "#FF7F50" },
+    { "cornflowerblue",       "#6495ED" },
+    { "cornsilk",             "#FFF8DC" },
+    { "crimson",              "#DC143C" },
+    { "cyan",                 "#00FFFF" },
+    { "darkblue",             "#00008B" },
+    { "darkcyan",             "#008B8B" },
+    { "darkgoldenrod",        "#B8860B" },
+    { "darkgray",             "#A9A9A9" },
+    { "darkgreen",            "#006400" },
+    { "darkkhaki",            "#BDB76B" },
+    { "darkmagenta",          "#8B008B" },
+    { "darkolivegreen",       "#556B2F" },
+    { "darkorange",           "#FF8C00" },
+    { "darkorchid",           "#9932CC" },
+    { "darkred",              "#8B0000" },
+    { "darksalmon",           "#E9967A" },
+    { "darkseagreen",         "#8FBC8F" },
+    { "darkslateblue",        "#483D8B" },
+    { "darkslategray",        "#2F4F4F" },
+    { "darkturquoise",        "#00CED1" },
+    { "darkviolet",           "#9400D3" },
+    { "deeppink",             "#FF1493" },
+    { "deepskyblue",          "#00BFFF" },
+    { "dimgray",              "#696969" },
+    { "dodgerblue",           "#1E90FF" },
+    { "firebrick",            "#B22222" },
+    { "floralwhite",          "#FFFAF0" },
+    { "forestgreen",          "#228B22" },
+    { "fuchsia",              "#FF00FF" },
+    { "gainsboro",            "#DCDCDC" },
+    { "ghostwhite",           "#F8F8FF" },
+    { "gold",                 "#FFD700" },
+    { "goldenrod",            "#DAA520" },
+    { "gray",                 "#808080" },
+    { "green",                "#008000" },
+    { "greenyellow",          "#ADFF2F" },
+    { "honeydew",             "#F0FFF0" },
+    { "hotpink",              "#FF69B4" },
+    { "indianred",            "#CD5C5C" },
+    { "indigo",               "#4B0082" },
+    { "ivory",                "#FFFFF0" },
+    { "khaki",                "#F0E68C" },
+    { "lavender",             "#E6E6FA" },
+    { "lavenderblush",        "#FFF0F5" },
+    { "lawngreen",            "#7CFC00" },
+    { "lemonchiffon",         "#FFFACD" },
+    { "lightblue",            "#ADD8E6" },
+    { "lightcoral",           "#F08080" },
+    { "lightcyan",            "#E0FFFF" },
+    { "lightgoldenrodyellow", "#FAFAD2" },
+    { "lightgreen",           "#90EE90" },
+    { "lightgrey",            "#D3D3D3" },
+    { "lightpink",            "#FFB6C1" },
+    { "lightsalmon",          "#FFA07A" },
+    { "lightseagreen",        "#20B2AA" },
+    { "lightskyblue",         "#87CEFA" },
+    { "lightslategray",       "#778899" },
+    { "lightsteelblue",       "#B0C4DE" },
+    { "lightyellow",          "#FFFFE0" },
+    { "lime",                 "#00FF00" },
+    { "limegreen",            "#32CD32" },
+    { "linen",                "#FAF0E6" },
+    { "magenta",              "#FF00FF" },
+    { "maroon",               "#800000" },
+    { "mediumaquamarine",     "#66CDAA" },
+    { "mediumblue",           "#0000CD" },
+    { "mediumorchid",         "#BA55D3" },
+    { "mediumpurple",         "#9370DB" },
+    { "mediumseagreen",       "#3CB371" },
+    { "mediumslateblue",      "#7B68EE" },
+    { "mediumspringgreen",    "#00FA9A" },
+    { "mediumturquoise",      "#48D1CC" },
+    { "mediumvioletred",      "#C71585" },
+    { "midnightblue",         "#191970" },
+    { "mintcream",            "#F5FFFA" },
+    { "mistyrose",            "#FFE4E1" },
+    { "moccasin",             "#FFE4B5" },
+    { "navajowhite",          "#FFDEAD" },
+    { "navy",                 "#000080" },
+    { "oldlace",              "#FDF5E6" },
+    { "olive",                "#808000" },
+    { "olivedrab",            "#6B8E23" },
+    { "orange",               "#FFA500" },
+    { "orangered",            "#FF4500" },
+    { "orchid",               "#DA70D6" },
+    { "palegoldenrod",        "#EEE8AA" },
+    { "palegreen",            "#98FB98" },
+    { "paleturquoise",        "#AFEEEE" },
+    { "palevioletred",        "#DB7093" },
+    { "papayawhip",           "#FFEFD5" },
+    { "peachpuff",            "#FFDAB9" },
+    { "peru",                 "#CD853F" },
+    { "pink",                 "#FFC0CB" },
+    { "plum",                 "#DDA0DD" },
+    { "powderblue",           "#B0E0E6" },
+    { "purple",               "#800080" },
+    { "red",                  "#FF0000" },
+    { "rosybrown",            "#BC8F8F" },
+    { "royalblue",            "#4169E1" },
+    { "saddlebrown",          "#8B4513" },
+    { "salmon",               "#FA8072" },
+    { "sandybrown",           "#F4A460" },
+    { "seagreen",             "#2E8B57" },
+    { "seashell",             "#FFF5EE" },
+    { "sienna",               "#A0522D" },
+    { "silver",               "#C0C0C0" },
+    { "skyblue",              "#87CEEB" },
+    { "slateblue",            "#6A5ACD" },
+    { "slategray",            "#708090" },
+    { "snow",                 "#FFFAFA" },
+    { "springgreen",          "#00FF7F" },
+    { "steelblue",            "#4682B4" },
+    { "tan",                  "#D2B48C" },
+    { "teal",                 "#008080" },
+    { "thistle",              "#D8BFD8" },
+    { "tomato",               "#FF6347" },
+    { "turquoise",            "#40E0D0" },
+    { "violet",               "#EE82EE" },
+    { "wheat",                "#F5DEB3" },
+    { "white",                "#FFFFFF" },
+    { "whitesmoke",           "#F5F5F5" },
+    { "yellow",               "#FFFF00" },
+    { "yellowgreen",          "#9ACD32" },
+    { NULL,                   NULL      }
+};
+#endif
+
 #if ATTRIBUTE_HASH_LOOKUP
 static uint attrsHash(ctmbstr s)
 {
@@ -403,7 +653,7 @@ static void attrsRemoveFromHash( TidyDocImpl* doc, TidyAttribImpl *attribs,
         {
             AttrHash* next = p->next;
             if ( prev )
-                prev->next = next;
+                prev->next = next; 
             else
                 attribs->hashtab[h] = next;
             TidyDocFree(doc, p);
@@ -493,6 +743,27 @@ AttVal* TY_(GetAttrByName)( Node *node, ctmbstr name )
             break;
     }
     return attr;
+}
+
+void TY_(DropAttrByName)( TidyDocImpl* doc, Node *node, ctmbstr name )
+{
+    AttVal *attr, *prev = NULL, *next;
+
+    for (attr = node->attributes; attr != NULL; prev = attr, attr = next)
+    {
+        next = attr->next;
+
+        if (attr->attribute && TY_(tmbstrcmp)(attr->attribute, name) == 0)
+        {
+            if (prev)
+                 prev->next = next;
+            else
+                 node->attributes = next;
+
+            TY_(FreeAttribute)( doc, attr ); 
+            break;
+        }
+    }
 }
 
 AttVal* TY_(AddAttribute)( TidyDocImpl* doc,
@@ -696,7 +967,7 @@ static Node* GetNodeByAnchor( TidyDocImpl* doc, ctmbstr name )
         if ( TY_(tmbstrcmp)(found->name, lname) == 0 )
             break;
     }
-
+    
     TidyDocFree(doc, lname);
     if ( found )
         return found->node;
@@ -759,9 +1030,9 @@ void TY_(FreeAttrTable)( TidyDocImpl* doc )
 
 void TY_(AppendToClassAttr)( TidyDocImpl* doc, AttVal *classattr, ctmbstr classname )
 {
-    const size_t len = TY_(tmbstrlen)(classattr->value) + TY_(tmbstrlen)(classname) + 2;
-    const tmbstr s = (tmbstr) TidyDocAlloc( doc, len );
-
+    uint len = TY_(tmbstrlen)(classattr->value) +
+        TY_(tmbstrlen)(classname) + 2;
+    tmbstr s = (tmbstr) TidyDocAlloc( doc, len );
     s[0] = '\0';
     if (classattr->value)
     {
@@ -919,7 +1190,7 @@ const Attribute* TY_(CheckAttribute)( TidyDocImpl* doc, Node *node, AttVal *attv
 
     if ( attribute != NULL )
     {
-        if (attribute->versions & VERS_XML)
+        if (attrIsXML_LANG(attval) || attrIsXML_SPACE(attval))
         {
             doc->lexer->isvoyager = yes;
             if (!cfgBool(doc, TidyHtmlOut))
@@ -930,7 +1201,7 @@ const Attribute* TY_(CheckAttribute)( TidyDocImpl* doc, Node *node, AttVal *attv
         }
 
         TY_(ConstrainVersion)(doc, AttributeVersions(node, attval));
-
+        
         if (attribute->attrchk)
             attribute->attrchk( doc, node, attval );
     }
@@ -991,12 +1262,12 @@ static void CheckLowerCaseAttrValue( TidyDocImpl* doc, Node *node, AttVal *attva
 {
     tmbstr p;
     Bool hasUpper = no;
-
+    
     if (!AttrHasValue(attval))
         return;
 
     p = attval->value;
-
+    
     while (*p)
     {
         if (TY_(IsUpper)(*p)) /* #501230 - fix by Terry Teague - 09 Jan 02 */
@@ -1012,7 +1283,7 @@ static void CheckLowerCaseAttrValue( TidyDocImpl* doc, Node *node, AttVal *attva
         Lexer* lexer = doc->lexer;
         if (lexer->isvoyager)
             TY_(ReportAttrError)( doc, node, attval, ATTR_VALUE_NOT_LCASE);
-
+  
         if ( lexer->isvoyager || cfgBool(doc, TidyLowerLiterals) )
             attval->value = TY_(tmbstrtolower)(attval->value);
     }
@@ -1022,13 +1293,13 @@ static void CheckLowerCaseAttrValue( TidyDocImpl* doc, Node *node, AttVal *attva
 
 void TY_(CheckUrl)( TidyDocImpl* doc, Node *node, AttVal *attval)
 {
-    tmbchar c;
+    tmbchar c; 
     tmbstr dest, p;
     uint escape_count = 0, backslash_count = 0;
     uint i, pos = 0;
     uint len;
     Bool isJavascript = no;
-
+    
     if (!AttrHasValue(attval))
     {
         TY_(ReportAttrError)( doc, node, attval, MISSING_ATTR_VALUE);
@@ -1036,7 +1307,7 @@ void TY_(CheckUrl)( TidyDocImpl* doc, Node *node, AttVal *attval)
     }
 
     p = attval->value;
-
+    
     isJavascript =
         TY_(tmbstrncmp)(p,"javascript:",sizeof("javascript:")-1)==0;
 
@@ -1051,12 +1322,12 @@ void TY_(CheckUrl)( TidyDocImpl* doc, Node *node, AttVal *attval)
         else if ((c > 0x7e) || (c <= 0x20) || (strchr("<>", c)))
             ++escape_count;
     }
-
+    
     if ( cfgBool(doc, TidyFixUri) && escape_count )
     {
         len = TY_(tmbstrlen)(p) + escape_count * 2 + 1;
         dest = (tmbstr) TidyDocAlloc(doc, len);
-
+        
         for (i = 0; 0 != (c = p[i]); ++i)
         {
             if ((c > 0x7e) || (c <= 0x20) || (strchr("<>", c)))
@@ -1111,11 +1382,8 @@ Bool TY_(IsValidHTMLID)(ctmbstr id)
     if (!s)
         return no;
 
-    if (!TY_(IsLetter)(*s++))
-        return no;
-
     while (*s)
-        if (!TY_(IsNamechar)(*s++))
+        if (TY_(IsHTMLSpace)(*s++))
             return no;
 
     return yes;
@@ -1179,7 +1447,7 @@ static Bool IsValidNMTOKEN(ctmbstr name)
 
 static Bool AttrValueIsAmong(AttVal *attval, ctmbstr const list[])
 {
-    const ctmbstr *v;
+    const ctmbstr *v;   
     for (v = list; *v; ++v)
         if (AttrValueIs(attval, *v))
             return yes;
@@ -1329,7 +1597,7 @@ void CheckValign( TidyDocImpl* doc, Node *node, AttVal *attval)
 void CheckLength( TidyDocImpl* doc, Node *node, AttVal *attval)
 {
     tmbstr p;
-
+    
     if (!AttrHasValue(attval))
     {
         TY_(ReportAttrError)( doc, node, attval, MISSING_ATTR_VALUE);
@@ -1341,7 +1609,7 @@ void CheckLength( TidyDocImpl* doc, Node *node, AttVal *attval)
         return;
 
     p = attval->value;
-
+    
     if (!TY_(IsDigit)(*p++))
     {
         TY_(ReportAttrError)( doc, node, attval, BAD_ATTRIBUTE_VALUE);
@@ -1398,7 +1666,7 @@ void CheckClear( TidyDocImpl* doc, Node *node, AttVal *attval)
     }
 
     CheckLowerCaseAttrValue( doc, node, attval );
-
+        
     if (!AttrValueIsAmong(attval, values))
         TY_(ReportAttrError)( doc, node, attval, BAD_ATTRIBUTE_VALUE);
 }
@@ -1418,7 +1686,7 @@ void CheckScope( TidyDocImpl* doc, Node *node, AttVal *attval)
 void CheckNumber( TidyDocImpl* doc, Node *node, AttVal *attval)
 {
     tmbstr p;
-
+    
     if (!AttrHasValue(attval))
     {
         TY_(ReportAttrError)( doc, node, attval, MISSING_ATTR_VALUE);
@@ -1431,7 +1699,7 @@ void CheckNumber( TidyDocImpl* doc, Node *node, AttVal *attval)
      return;
 
     p  = attval->value;
-
+    
     /* font size may be preceded by + or - */
     if ( nodeIsFONT(node) && (*p == '+' || *p == '-') )
         ++p;
@@ -1558,9 +1826,11 @@ void CheckLang( TidyDocImpl* doc, Node *node, AttVal *attval)
 /* checks type attribute */
 void CheckType( TidyDocImpl* doc, Node *node, AttVal *attval)
 {
-    ctmbstr const valuesINPUT[] = {"text", "password", "checkbox", "radio",
-                                   "submit", "reset", "file", "hidden",
-                                   "image", "button", NULL};
+    ctmbstr const valuesINPUT[] = {
+        "text", "password", "checkbox", "radio", "submit", "reset", "file",
+        "hidden", "image", "button", "color", "date", "datetime",
+        "datetime-local", "email", "month", "number", "range", "search",
+        "tel", "time", "url", "week", NULL};
     ctmbstr const valuesBUTTON[] = {"button", "submit", "reset", NULL};
     ctmbstr const valuesUL[] = {"disc", "square", "circle", NULL};
     ctmbstr const valuesOL[] = {"1", "a", "i", NULL};
@@ -1612,14 +1882,14 @@ void TY_(SortAttributes)(Node* node, TidyAttrSortStrategy strat)
 
 /**
 * Attribute sorting contributed by Adrian Wilkins, 2007
-*
+* 
 * Portions copyright Simon Tatham 2001.
 *
-* Merge sort algortithm adpated from listsort.c linked from
+* Merge sort algortithm adpated from listsort.c linked from 
 * http://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.html
-*
+* 
 * Original copyright notice proceeds below.
-*
+* 
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
 * files (the "Software"), to deal in the Software without
@@ -1628,10 +1898,10 @@ void TY_(SortAttributes)(Node* node, TidyAttrSortStrategy strat)
 * sell copies of the Software, and to permit persons to whom the
 * Software is furnished to do so, subject to the following
 * conditions:
-*
+* 
 * The above copyright notice and this permission notice shall be
 * included in all copies or substantial portions of the Software.
-*
+* 
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND

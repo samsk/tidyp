@@ -23,6 +23,7 @@
 #include "tidy-int.h"
 #include "parser.h"
 #include "clean.h"
+#include "gdoc.h"
 #include "config.h"
 #include "message.h"
 #include "pprint.h"
@@ -201,7 +202,6 @@ ctmbstr TIDY_CALL     tidyVersion(void)
 {
     return TY_(Version)();
 }
-
 
 /* Get/set configuration options
 */
@@ -639,14 +639,50 @@ Bool TIDY_CALL tidyOptCopyConfig( TidyDoc to, TidyDoc from )
 */
 Bool TIDY_CALL        tidySetReportFilter( TidyDoc tdoc, TidyReportFilter filt )
 {
-    TidyDocImpl* impl = tidyDocToImpl( tdoc );
-    if ( impl )
-    {
-        impl->mssgFilt = filt;
-        return yes;
-    }
-    return no;
+  TidyDocImpl* impl = tidyDocToImpl( tdoc );
+  if ( impl )
+  {
+    impl->mssgFilt = filt;
+    return yes;
+  }
+  return no;
 }
+
+#if 0   /* Not yet */
+int         tidySetContentOutputSink( TidyDoc tdoc, TidyOutputSink* outp )
+{
+  TidyDocImpl* impl = tidyDocToImpl( tdoc );
+  if ( impl )
+  {
+    impl->docOut = outp;
+    return 0;
+  }
+  return -EINVAL;
+}
+int         tidySetDiagnosticOutputSink( TidyDoc tdoc, TidyOutputSink* outp )
+{
+  TidyDocImpl* impl = tidyDocToImpl( tdoc );
+  if ( impl )
+  {
+    impl->msgOut = outp;
+    return 0;
+  }
+  return -EINVAL;
+}
+
+
+/* Library helpers
+*/
+cmbstr       tidyLookupMessage( TidyDoc tdoc, int errorNo )
+{
+  TidyDocImpl* impl = tidyDocToImpl( tdoc );
+  cmbstr mssg = NULL;
+  if ( impl )
+    mssg = tidyMessage_Lookup( impl->messages, errorNo );
+  return mssg;
+}
+#endif
+
 
 FILE* TIDY_CALL   tidySetErrorFile( TidyDoc tdoc, ctmbstr errfilnam )
 {
@@ -818,9 +854,7 @@ int   tidyDocParseFile( TidyDocImpl* doc, ctmbstr filnam )
     FILE* fin = fopen( filnam, "rb" );
 
 #if PRESERVE_FILE_TIMES
-    struct stat sbuf;
-
-    memset( &sbuf, 0, sizeof(sbuf) );
+    struct stat sbuf = {0};
     /* get last modified time */
     TidyClearMemory( &doc->filetimes, sizeof(doc->filetimes) );
     if ( fin && cfgBool(doc,TidyKeepFileTimes) &&
@@ -852,7 +886,7 @@ int   tidyDocParseFile( TidyDocImpl* doc, ctmbstr filnam )
 int   tidyDocParseStdin( TidyDocImpl* doc )
 {
     StreamIn* in = TY_(FileInput)( doc, stdin, cfg( doc, TidyInCharEncoding ));
-    const int status = TY_(DocParseStream)( doc, in );
+    int status = TY_(DocParseStream)( doc, in );
     TY_(freeStreamIn)(in);
     return status;
 }
@@ -872,11 +906,11 @@ int   tidyDocParseBuffer( TidyDocImpl* doc, TidyBuffer* inbuf )
 int   tidyDocParseString( TidyDocImpl* doc, ctmbstr content )
 {
     int status = -EINVAL;
+    TidyBuffer inbuf;
+    StreamIn* in = NULL;
 
     if ( content )
     {
-        TidyBuffer inbuf;
-        StreamIn* in = NULL;
         tidyBufInitWithAllocator( &inbuf, doc->allocator );
         tidyBufAttach( &inbuf, (byte*)content, TY_(tmbstrlen)(content)+1 );
         in = TY_(BufferInput)( doc, &inbuf, cfg( doc, TidyInCharEncoding ));
@@ -889,8 +923,8 @@ int   tidyDocParseString( TidyDocImpl* doc, ctmbstr content )
 
 int   tidyDocParseSource( TidyDocImpl* doc, TidyInputSource* source )
 {
-    StreamIn* const in = TY_(UserInput)( doc, source, cfg( doc, TidyInCharEncoding ));
-    const int status = TY_(DocParseStream)( doc, in );
+    StreamIn* in = TY_(UserInput)( doc, source, cfg( doc, TidyInCharEncoding ));
+    int status = TY_(DocParseStream)( doc, in );
     TY_(freeStreamIn)(in);
     return status;
 }
@@ -1198,6 +1232,7 @@ int         tidyDocCleanAndRepair( TidyDocImpl* doc )
     Bool word2K   = cfgBool( doc, TidyWord2000 );
     Bool logical  = cfgBool( doc, TidyLogicalEmphasis );
     Bool clean    = cfgBool( doc, TidyMakeClean );
+    Bool gdoc     = cfgBool( doc, TidyGDocClean );
     Bool dropFont = cfgBool( doc, TidyDropFontTags );
     Bool htmlOut  = cfgBool( doc, TidyHtmlOut );
     Bool xmlOut   = cfgBool( doc, TidyXmlOut );
@@ -1206,13 +1241,15 @@ int         tidyDocCleanAndRepair( TidyDocImpl* doc )
     Bool tidyMark = cfgBool( doc, TidyMark );
     Bool tidyXmlTags = cfgBool( doc, TidyXmlTags );
     Bool wantNameAttr = cfgBool( doc, TidyAnchorAsName );
+    Bool mergeEmphasis = cfgBool( doc, TidyMergeEmphasis );
     Node* node;
 
     if (tidyXmlTags)
        return tidyDocStatus( doc );
 
     /* simplifies <b><b> ... </b> ...</b> etc. */
-    TY_(NestedEmphasis)( doc, &doc->root );
+    if ( mergeEmphasis )
+        TY_(NestedEmphasis)( doc, &doc->root );
 
     /* cleans up <dir>indented text</dir> etc. */
     TY_(List2BQ)( doc, &doc->root );
@@ -1236,10 +1273,17 @@ int         tidyDocCleanAndRepair( TidyDocImpl* doc )
     if ( clean || dropFont )
         TY_(CleanDocument)( doc );
 
+    /* clean up html exported by Google Docs */
+    if ( gdoc )
+        TY_(CleanGoogleDocument)( doc );
+
     /*  Move terminating <br /> tags from out of paragraphs  */
     /*!  Do we want to do this for all block-level elements?  */
 
     /* This is disabled due to http://tidy.sf.net/bug/681116 */
+#if 0
+    FixBrakes( doc, TY_(FindBody)( doc ));
+#endif
 
     /*  Reconcile http-equiv meta element with output encoding  */
     if (cfg( doc, TidyOutCharEncoding) != RAW
@@ -1351,7 +1395,6 @@ int         tidyDocSaveStream( TidyDocImpl* doc, StreamOut* out )
     {
         /* noop */
         TY_(DropFontElements)(doc, &doc->root, NULL);
-        TY_(WbrToSpace)(doc, &doc->root);
     }
 
     if ((makeClean && asciiChars) || makeBare)
@@ -1689,13 +1732,13 @@ TidyAttrId TIDY_CALL tidyAttrGetId( TidyAttr tattr )
 }
 Bool TIDY_CALL tidyAttrIsProp( TidyAttr tattr )
 {
-  AttVal* attval = tidyAttrToImpl( tattr );
-  Bool isProprietary = yes;
-  if ( attval )
-    isProprietary = ( attval->dict
-                      ? (attval->dict->versions & VERS_PROPRIETARY) != 0
-                      : yes );
-  return isProprietary;
+  /*
+    You cannot tell whether an attribute is proprietary without
+    knowing on which element it occurs in the general case, but
+    this function cannot know the element. As a result, it does
+    not work anymore. Do not use.
+  */
+  return no;
 }
 
 /*

@@ -2,13 +2,10 @@
 #define __LEXER_H__
 
 /* lexer.h -- Lexer for html parser
-
+  
    (c) 1998-2008 (W3C) MIT, ERCIM, Keio University
    See tidyp.h for the copyright notice.
 
-*/
-
-/*
   Given an input source, it returns a sequence of tokens.
 
      GetToken(source) gets the next token
@@ -144,7 +141,7 @@ typedef enum
 #define CM_IMG          (1 << 16)
 /* Elements with inline and block model. Used to avoid calling InlineDup. */
 #define CM_MIXED        (1 << 17)
-/* Elements whose content needs to be indented only if containing one
+/* Elements whose content needs to be indented only if containing one 
    CM_BLOCK element. */
 #define CM_NO_INDENT    (1 << 18)
 /* Elements that are obsolete (such as "dir", "menu"). */
@@ -189,6 +186,10 @@ typedef enum
 /* special flag */
 #define VERS_XML           65536u
 
+/* HTML5 */
+#define HT50              131072u
+#define XH50              262144u
+
 /* compatibility symbols */
 #define VERS_UNKNOWN       (xxxx)
 #define VERS_HTML20        (HT20)
@@ -206,10 +207,10 @@ typedef enum
 #define VERS_EVENTS        (VERS_HTML40|VERS_XHTML11)
 #define VERS_FROM32        (VERS_HTML32|VERS_HTML40)
 #define VERS_FROM40        (VERS_HTML40|VERS_XHTML11|VERS_BASIC)
-#define VERS_XHTML         (X10S|X10T|X10F|XH11|XB10)
+#define VERS_XHTML         (X10S|X10T|X10F|XH11|XB10|XH50)
 
 /* all W3C defined document types */
-#define VERS_ALL           (VERS_HTML20|VERS_HTML32|VERS_FROM40)
+#define VERS_ALL           (VERS_HTML20|VERS_HTML32|VERS_FROM40|XH50|HT50)
 
 /* all proprietary types */
 #define VERS_PROPRIETARY   (VERS_NETSCAPE|VERS_MICROSOFT|VERS_SUN)
@@ -324,7 +325,20 @@ struct _Node
   FreeLexer() to free it.
 */
 
-struct _Lexer {
+struct _Lexer
+{
+#if 0  /* Move to TidyDocImpl */
+    StreamIn* in;           /* document content input */
+    StreamOut* errout;      /* error output stream */
+
+    uint badAccess;         /* for accessibility errors */
+    uint badLayout;         /* for bad style errors */
+    uint badChars;          /* for bad character encodings */
+    uint badForm;           /* for mismatched/mispositioned form tags */
+    uint warnings;          /* count of warnings in this document */
+    uint errors;            /* count of errors */
+#endif
+
     uint lines;             /* lines seen */
     uint columns;           /* at start of current token */
     Bool waswhite;          /* used to collapse contiguous white space */
@@ -345,7 +359,7 @@ struct _Lexer {
     Node* itoken;           /* last duplicate inline returned by GetToken() */
     Node* root;             /* remember root node of the document */
     Node* parent;           /* remember parent node for CDATA elements */
-
+    
     Bool seenEndBody;       /* true if a </body> tag has been encountered */
     Bool seenEndHtml;       /* true if a </html> tag has been encountered */
 
@@ -373,6 +387,10 @@ struct _Lexer {
     TagStyle *styles;          /* used for cleaning up presentation markup */
 
     TidyAllocator* allocator; /* allocator */
+
+#if 0
+    TidyDocImpl* doc;       /* Pointer back to doc for error reporting */
+#endif 
 };
 
 
@@ -390,6 +408,7 @@ void TY_(ConstrainVersion)( TidyDocImpl* doc, uint vers );
 Bool TY_(IsWhite)(uint c);
 Bool TY_(IsDigit)(uint c);
 Bool TY_(IsLetter)(uint c);
+Bool TY_(IsHTMLSpace)(uint c);
 Bool TY_(IsNewline)(uint c);
 Bool TY_(IsNamechar)(uint c);
 Bool TY_(IsXMLLetter)(uint c);

@@ -2,7 +2,7 @@
 #define __CONFIG_H__
 
 /* config.h -- read config file and manage config properties
-
+  
   (c) 1998-2006 (W3C) MIT, ERCIM, Keio University
   See tidyp.h for the copyright notice.
 
