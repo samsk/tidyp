@@ -121,6 +121,7 @@ static CheckAttribs CheckHTML;
 #define VERS_ELEM_VAR        (HT20|HT32|H40T|H41T|X10T|H40F|H41F|X10F|H40S|H41S|X10S|XH11|XB10|HT50|XH50)
 #define VERS_ELEM_XMP        (HT20|HT32|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx)
 
+#define VERS_ELEM_MAIN       (xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|HT50|XH50)
 #define VERS_ELEM_ARTICLE    (xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|HT50|XH50)
 #define VERS_ELEM_ASIDE      (xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|HT50|XH50)
 #define VERS_ELEM_AUDIO      (xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|xxxx|HT50|XH50)
@@ -273,6 +274,7 @@ static const Dict tag_defs[] =
   { TidyTag_SPACER,     "spacer",     VERS_NETSCAPE,        NULL,                       (CM_INLINE|CM_EMPTY),                          TY_(ParseEmpty),    NULL           },
 
   /* HTML5 */
+  { TidyTag_MAIN,        "main",         VERS_ELEM_MAIN,        &TY_(W3CAttrsFor_MAIN)[0],        (CM_BLOCK),                    TY_(ParseBlock),     NULL           },
   { TidyTag_ARTICLE,     "article",      VERS_ELEM_ARTICLE,     &TY_(W3CAttrsFor_ARTICLE)[0],     (CM_BLOCK),                    TY_(ParseBlock),     NULL           },
   { TidyTag_ASIDE,       "aside",        VERS_ELEM_ASIDE,       &TY_(W3CAttrsFor_ASIDE)[0],       (CM_BLOCK),                    TY_(ParseBlock),     NULL           },
   { TidyTag_AUDIO,       "audio",        VERS_ELEM_AUDIO,       &TY_(W3CAttrsFor_AUDIO)[0],       (CM_BLOCK|CM_INLINE),          TY_(ParseBlock),     NULL           },

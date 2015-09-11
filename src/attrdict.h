@@ -123,6 +123,7 @@ extern const AttrVersion TY_(W3CAttrsFor_SUMMARY)[];
 extern const AttrVersion TY_(W3CAttrsFor_FIGCAPTION)[];
 extern const AttrVersion TY_(W3CAttrsFor_HGROUP)[];
 extern const AttrVersion TY_(W3CAttrsFor_FIGURE)[];
+extern const AttrVersion TY_(W3CAttrsFor_MAIN)[];
 extern const AttrVersion TY_(W3CAttrsFor_ARTICLE)[];
 extern const AttrVersion TY_(W3CAttrsFor_ASIDE)[];
 extern const AttrVersion TY_(W3CAttrsFor_NAV)[];

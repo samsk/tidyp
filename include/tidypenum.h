@@ -440,6 +440,7 @@ typedef enum
   TidyTag_XMP,      /**< XMP */
   TidyTag_NEXTID,   /**< NEXTID */
 
+  TidyTag_MAIN,
   TidyTag_ARTICLE,
   TidyTag_ASIDE,
   TidyTag_AUDIO,
